@@ -9,28 +9,41 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    
+    @State var isModal = false
+    
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Card.name, ascending: true)],
         animation: .default)
-    private var items: FetchedResults<Item>
+    private var cards: FetchedResults<Card>
 
     var body: some View {
-        List {
-            ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+        NavigationView{
+            List{
+                ForEach(cards){ card in
+                    CardRowView(cardName: card.name ?? "Unknown")
+                }
+                .onDelete(perform: deleteItems)
             }
-            .onDelete(perform: deleteItems)
-        }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
-
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
-            }
+            .listStyle(InsetGroupedListStyle())
+            
+            
+//            .navigationBarItems(trailing: Button("Add Card"){ addItem() }.font(.body)
+//            )
+            .navigationBarItems(trailing:
+                Button(action: {
+                    isModal.toggle()
+                }, label: {
+                    Text("Add Card")
+                        .font(.body)
+                        .sheet(isPresented: $isModal){
+                            AddCardView()
+                        }
+                }
+            ))
+            .navigationTitle("Cards")
         }
     }
 
@@ -38,6 +51,11 @@ struct ContentView: View {
         withAnimation {
             let newItem = Item(context: viewContext)
             newItem.timestamp = Date()
+            let cardItem = Card(context: viewContext)
+            let cardNames = ["Absa", "Standard Bank", "Nedbank"]
+            
+            cardItem.id = UUID()
+            cardItem.name = "\(cardNames.randomElement()!)"
 
             do {
                 try viewContext.save()
@@ -52,7 +70,7 @@ struct ContentView: View {
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
+            offsets.map { cards[$0] }.forEach(viewContext.delete)
 
             do {
                 try viewContext.save()
@@ -76,5 +94,6 @@ private let itemFormatter: DateFormatter = {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//            .colorScheme(.dark)
     }
 }
