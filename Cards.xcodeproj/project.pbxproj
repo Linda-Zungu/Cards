@@ -13,6 +13,8 @@
 		645060C825EE741F005A2DF8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 645060C725EE741F005A2DF8 /* Preview Assets.xcassets */; };
 		645060CA25EE741F005A2DF8 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645060C925EE741F005A2DF8 /* Persistence.swift */; };
 		645060CD25EE741F005A2DF8 /* Cards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 645060CB25EE741F005A2DF8 /* Cards.xcdatamodeld */; };
+		647761E325EE7F9B0043FE32 /* CardRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647761E225EE7F9B0043FE32 /* CardRowView.swift */; };
+		64F9984325F14F6F009C3445 /* AddCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F9984225F14F6F009C3445 /* AddCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		645060C925EE741F005A2DF8 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		645060CC25EE741F005A2DF8 /* Cards.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Cards.xcdatamodel; sourceTree = "<group>"; };
 		645060CE25EE741F005A2DF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		647761E225EE7F9B0043FE32 /* CardRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRowView.swift; sourceTree = "<group>"; };
+		64F9984225F14F6F009C3445 /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,8 @@
 			children = (
 				645060C025EE741D005A2DF8 /* CardsApp.swift */,
 				645060C225EE741D005A2DF8 /* ContentView.swift */,
+				64F9984225F14F6F009C3445 /* AddCardView.swift */,
+				647761E225EE7F9B0043FE32 /* CardRowView.swift */,
 				645060C425EE741F005A2DF8 /* Assets.xcassets */,
 				645060C925EE741F005A2DF8 /* Persistence.swift */,
 				645060CE25EE741F005A2DF8 /* Info.plist */,
@@ -145,6 +151,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				645060CA25EE741F005A2DF8 /* Persistence.swift in Sources */,
+				647761E325EE7F9B0043FE32 /* CardRowView.swift in Sources */,
+				64F9984325F14F6F009C3445 /* AddCardView.swift in Sources */,
 				645060C325EE741D005A2DF8 /* ContentView.swift in Sources */,
 				645060C125EE741D005A2DF8 /* CardsApp.swift in Sources */,
 				645060CD25EE741F005A2DF8 /* Cards.xcdatamodeld in Sources */,
