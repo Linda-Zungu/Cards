@@ -11,8 +11,8 @@ import CoreData
 struct ContentView: View {
     
     @State var isModal = false
-    @State var cardNumber = "6372 2789 2793"
-    @State var cardHolder = "Mr L Zungu"
+    @State var cardNumber = ""
+    @State var cardHolder = ""
     
     @Environment(\.managedObjectContext) private var viewContext
 
@@ -36,19 +36,32 @@ struct ContentView: View {
                 Button(action: {
                     isModal = true
                 }, label: {
-                    Image(systemName: "plus")
+//                    Image(systemName: "plus")
+                    Text("Add Card")
                         .font(.body)
                         .sheet(isPresented: $isModal){
                             NavigationView{
                                 ScrollView{
                                     VStack{
-                                        Text("Hello World!")
+                                        Group{
+                                            TextField("Card Number", text: $cardNumber)
+                                            TextField("Name", text: $cardHolder)
+                                        }
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .padding()
+                                        .foregroundColor(.primary)
                                     }
                                 }
+                                .navigationBarItems(trailing:
+                                    Button(action: {
+                                        isModal = false
+                                    }, label: {
+                                        Text("Done")
+                                    })
+                                )
                                 .navigationTitle("Add Card")
                                 .navigationBarTitleDisplayMode(.inline)
                             }
-                            .foregroundColor(.primary)
                         }
                         .font(.none)
                     }
