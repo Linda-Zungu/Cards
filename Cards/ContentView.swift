@@ -11,6 +11,8 @@ import CoreData
 struct ContentView: View {
     
     @State var isModal = false
+    @State var cardNumber = "6372 2789 2793"
+    @State var cardHolder = "Mr L Zungu"
     
     @Environment(\.managedObjectContext) private var viewContext
 
@@ -29,19 +31,27 @@ struct ContentView: View {
             }
             .listStyle(InsetGroupedListStyle())
             
-            
-//            .navigationBarItems(trailing: Button("Add Card"){ addItem() }.font(.body)
-//            )
+        
             .navigationBarItems(trailing:
                 Button(action: {
-                    isModal.toggle()
+                    isModal = true
                 }, label: {
-                    Text("Add Card")
+                    Image(systemName: "plus")
                         .font(.body)
                         .sheet(isPresented: $isModal){
-                            AddCardView()
+                            NavigationView{
+                                ScrollView{
+                                    VStack{
+                                        Text("Hello World!")
+                                    }
+                                }
+                                .navigationTitle("Add Card")
+                                .navigationBarTitleDisplayMode(.inline)
+                            }
+                            .foregroundColor(.primary)
                         }
-                }
+                        .font(.none)
+                    }
             ))
             .navigationTitle("Cards")
         }
