@@ -14,6 +14,23 @@ struct ContentView: View {
     @State var cardNumber = ""
     @State var cardHolder = ""
     
+    var banks = ["Absa Group Limited",
+                 "African Bank Limited",
+                 "Bidvest Bank Limited",
+                 "Capitec Bank Limited",
+                 "Discovery Limited",
+                 "First National Bank",
+                 "FirstRand Bank",
+                 "Investec Bank Limited",
+                 "Nedbank Limited",
+                 "Standard Bank of South Africa",
+                 "TymeBank"
+    ]
+    @State var selectedBank = ""
+    
+    
+    
+    
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
@@ -36,27 +53,67 @@ struct ContentView: View {
                 Button(action: {
                     isModal = true
                 }, label: {
-//                    Image(systemName: "plus")
                     Text("Add Card")
                         .font(.body)
                         .sheet(isPresented: $isModal){
                             NavigationView{
                                 ScrollView{
                                     VStack{
+                                        HStack{
+                                            Text("Card Details")
+                                                .padding()
+                                                .foregroundColor(.primary)
+                                            Spacer()
+                                        }
+                                        Divider()
+                                            .padding(.horizontal)
+                                        
+                                        Text("Pick Your Bank")
+                                            .font(.headline)
+                                            .foregroundColor(.gray)
+                                        
+                                        Picker("Pick Your Bank", selection: $selectedBank){
+                                            ForEach(banks, id: \.self){
+                                                Text($0)
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                        
+                                        Divider()
+                                            .padding(.horizontal)
+                                        
                                         Group{
                                             TextField("Card Number", text: $cardNumber)
-                                            TextField("Name", text: $cardHolder)
+                                            TextField("Card Holder Name", text: $cardHolder)
+                                            HStack{
+                                                TextField("CVV Number", text: .constant("123"))
+                                                Spacer()
+                                                Image(systemName: "creditcard")
+                                                    .font(.system(size: 25))
+                                            }
                                         }
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
                                         .padding()
                                         .foregroundColor(.primary)
+                                            
+                                        
+                                        Spacer()
+                                        
+                                        Button(action: {
+                                            addCard()
+                                            isModal = false
+                                        }, label: {
+                                            RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
+                                                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                                .overlay(Text("Save").foregroundColor(.primary))
+                                        })
                                     }
                                 }
                                 .navigationBarItems(trailing:
                                     Button(action: {
                                         isModal = false
                                     }, label: {
-                                        Text("Done")
+                                        Text("Cancel")
                                     })
                                 )
                                 .navigationTitle("Add Card")
@@ -67,6 +124,20 @@ struct ContentView: View {
                     }
             ))
             .navigationTitle("Cards")
+        }
+    }
+    
+    private func addCard(){
+        let card = Card(context: viewContext)
+        card.name = self.selectedBank
+        card.id = UUID()
+        card.cardNumber = self.cardNumber
+        
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
 
