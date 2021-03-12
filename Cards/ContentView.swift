@@ -11,24 +11,25 @@ import CoreData
 struct ContentView: View {
     
     @State var isModal = false
-    @State var cardNumber = ""
-    @State var cardHolder = ""
+    @State var cardNumber = "1234567890123456"
+    @State var cardHolder = "Mr L Zungu"
+    @State var cvvNumber = "123"
     
-    var banks = ["Absa Group Limited",
-                 "African Bank Limited",
-                 "Bidvest Bank Limited",
-                 "Capitec Bank Limited",
-                 "Discovery Limited",
+    var banks = ["Absa Group",
+                 "African Bank",
+                 "Bidvest Bank",
+                 "Capitec Bank",
+                 "Discovery",
                  "First National Bank",
                  "FirstRand Bank",
-                 "Investec Bank Limited",
-                 "Nedbank Limited",
-                 "Standard Bank of South Africa",
+                 "Investec Bank ",
+                 "Nedbank",
+                 "Standard Bank",
                  "TymeBank"
     ]
     @State var selectedBank = ""
     
-    
+    @State var isNotTapped = true
     
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -59,12 +60,107 @@ struct ContentView: View {
                             NavigationView{
                                 ScrollView{
                                     VStack{
+                                        BlurView(style: .systemUltraThinMaterial)
+                                            .frame(width: UIScreen.main.bounds.width-40, height: 220, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                            .overlay(
+                                                ZStack{
+                                                    VStack{
+                                                        BlurView(style: .systemChromeMaterial)
+                                                            .opacity(isNotTapped ? 0 : 1)
+                                                            .frame(width: UIScreen.main.bounds.width-40, height: 60, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                                            .padding(.top, 60)
+                                                            .overlay(
+                                                                HStack{
+                                                                    Text("\(cvvNumber)")
+                                                                        .tracking(7)
+                                                                        .rotation3DEffect(
+                                                                            .degrees(180),
+                                                                            axis: /*@START_MENU_TOKEN@*/(x: 0.0, y: 1.0, z: 0.0)/*@END_MENU_TOKEN@*/)
+                                                                        .padding(.top, 60)
+                                                                        .padding(.horizontal, 50)
+                                                                        .foregroundColor(.primary)
+                                                                        .font(.headline)
+                                                                        .opacity(isNotTapped ? 0 : 1)
+                                                                    
+                                                                    Spacer()
+                                                                }
+                                                            )
+                                                    }
+                                                        
+                                                    VStack{
+                                                        HStack{
+                                                            Text(isNotTapped ? "\(selectedBank)" : "")
+                                                                .foregroundColor(.white)
+                                                                .font(.title2)
+                                                                .bold()
+                                                                .padding()
+                                                            Spacer()
+                                                        }
+                                                        
+                                                        Spacer()
+                                                        
+                                                        Text(isNotTapped ? "\(cardNumber)" : "")
+                                                            .tracking(7)
+                                                            .shadow(radius: 1, y: 2)
+                                                            .foregroundColor(.white)
+                                                        
+                                                        Spacer(minLength: 60)
+                                                        HStack{
+                                                            Text(isNotTapped ? "\(cardHolder)" : "")
+                                                                .tracking(3)
+                                                                .shadow(radius: 1, y: 2)
+                                                                .foregroundColor(.white)
+                                                                .padding()
+                                                            
+                                                            Spacer()
+                                                        }
+                                                    }
+                                                }
+                                                
+                                            )
+                                            .cornerRadius(15)
+                                            .rotation3DEffect(
+                                                .degrees(isNotTapped ? 0 : 180),
+                                                axis: (x: 0.0, y: 2.0, z: 0.0)
+                                                )
+                                            .shadow(radius: 10, y: 10)
+                                            .padding()
+                                            .animation(.spring(response: 0.7, dampingFraction: 0.6, blendDuration: 0.2))
+                                            
+
                                         HStack{
                                             Text("Card Details")
                                                 .padding()
                                                 .foregroundColor(.primary)
+                                                .textCase(/*@START_MENU_TOKEN@*/.uppercase/*@END_MENU_TOKEN@*/)
                                             Spacer()
                                         }
+                                        Divider()
+                                            .padding(.horizontal)
+                                        
+                                        Group{
+                                            Group{
+                                                TextField("Card Number", text: $cardNumber)
+                                                    .keyboardType(.numberPad)
+                                                    
+                                                TextField("Card Holder Name", text: $cardHolder)
+                                            }
+                                            .gesture(TapGesture().onEnded{isNotTapped = true})
+                                                
+                                            HStack{
+                                                TextField("CVV Number", text: $cvvNumber)
+                                                    .keyboardType(.numberPad)
+                                                    .simultaneousGesture(TapGesture().onEnded{isNotTapped = false})
+                                                    
+                                                Spacer()
+                                                Image(systemName: "creditcard")
+                                                    .font(.system(size: 25))
+                                            }
+                                        }
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .padding()
+                                        .foregroundColor(.primary)
+                                        
                                         Divider()
                                             .padding(.horizontal)
                                         
@@ -79,33 +175,13 @@ struct ContentView: View {
                                         }
                                         .padding(.horizontal)
                                         
-                                        Divider()
-                                            .padding(.horizontal)
-                                        
-                                        Group{
-                                            TextField("Card Number", text: $cardNumber)
-                                            TextField("Card Holder Name", text: $cardHolder)
-                                            HStack{
-                                                TextField("CVV Number", text: .constant("123"))
-                                                Spacer()
-                                                Image(systemName: "creditcard")
-                                                    .font(.system(size: 25))
-                                            }
-                                        }
-                                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                                        .padding()
-                                        .foregroundColor(.primary)
-                                            
-                                        
                                         Spacer()
                                         
                                         Button(action: {
                                             addCard()
                                             isModal = false
                                         }, label: {
-                                            RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
-                                                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                                                .overlay(Text("Save").foregroundColor(.primary))
+                                            Text("+ Save")
                                         })
                                     }
                                 }
@@ -128,16 +204,19 @@ struct ContentView: View {
     }
     
     private func addCard(){
-        let card = Card(context: viewContext)
-        card.name = self.selectedBank
-        card.id = UUID()
-        card.cardNumber = self.cardNumber
-        
-        do {
-            try viewContext.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        withAnimation{
+            let card = Card(context: viewContext)
+            card.name = self.selectedBank
+            card.id = UUID()
+            card.cardNumber = self.cardNumber
+            card.cvvNumber = self.cvvNumber
+            
+            do {
+                try viewContext.save()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
         }
     }
 
