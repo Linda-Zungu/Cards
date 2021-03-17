@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var cardNumber = "1234567890123456"
     @State var cardHolder = "Mr L Zungu"
     @State var cvvNumber = "123"
+    @State var expiryDate = "08/24"
     
     var banks = ["Absa Group",
                  "African Bank",
@@ -43,7 +44,7 @@ struct ContentView: View {
         NavigationView{
             List{
                 ForEach(cards){ card in
-                    CardRowView(cardName: card.name ?? "Unknown")
+                    CardRowView(cardName: card.name ?? "Unknown", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy")
                 }
                 .onDelete(perform: deleteItems)
             }
@@ -97,14 +98,21 @@ struct ContentView: View {
                                                             Spacer()
                                                         }
                                                         
-                                                        Spacer()
+                                                        Spacer(minLength: 40)
                                                         
                                                         Text(isNotTapped ? "\(cardNumber)" : "")
                                                             .tracking(7)
                                                             .shadow(radius: 1, y: 2)
                                                             .foregroundColor(.white)
                                                         
-                                                        Spacer(minLength: 60)
+                                                        Spacer(minLength: 5)
+                                                        
+                                                        Text(isNotTapped ? "\(expiryDate)" : "")
+                                                            .tracking(7)
+                                                            .shadow(radius: 1, y: 2)
+                                                            .foregroundColor(.white)
+                                                        
+                                                        Spacer(minLength: 5)
                                                         HStack{
                                                             Text(isNotTapped ? "\(cardHolder)" : "")
                                                                 .tracking(3)
@@ -156,6 +164,8 @@ struct ContentView: View {
                                                 Image(systemName: "creditcard")
                                                     .font(.system(size: 25))
                                             }
+                                            
+                                            TextField("Expiry Date", text: $expiryDate)
                                         }
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
                                         .padding()
