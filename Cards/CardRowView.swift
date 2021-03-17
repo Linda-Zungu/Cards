@@ -18,13 +18,23 @@ struct CardRowView: View {
             RoundedRectangle(cornerRadius: 5)
                 .frame(width: 70, height: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 .overlay(
-                    VStack{
+                    VStack(alignment: .leading){
                         Group{
+                            Text("\(cardName == "First National Bank" ? "FNB" : cardName)")
+                                .bold()
+                                .padding(.top, 4)
+                                .padding(.bottom, 0.1)
+                            
                             Text("\(cardNumber)")
+                                .tracking(0.5)
+                                
                             Text("\(expiryDate)")
+                                .offset(x: 28, y: 2)
                         }
                         .foregroundColor(.white)
                         .font(.system(size: 5))
+                        .shadow(radius: 1, y: 1)
+                        Spacer()
                     }
                     
                 )
