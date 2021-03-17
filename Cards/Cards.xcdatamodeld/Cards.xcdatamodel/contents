@@ -3,6 +3,7 @@
     <entity name="Card" representedClassName="Card" syncable="YES" codeGenerationType="class">
         <attribute name="cardNumber" optional="YES" attributeType="String"/>
         <attribute name="cvvNumber" optional="YES" attributeType="String"/>
+        <attribute name="expiryDate" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
@@ -10,7 +11,7 @@
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <elements>
-        <element name="Card" positionX="-54" positionY="0" width="128" height="89"/>
+        <element name="Card" positionX="-54" positionY="0" width="128" height="104"/>
         <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
     </elements>
 </model>
