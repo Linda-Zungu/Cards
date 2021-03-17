@@ -28,7 +28,7 @@ struct ContentView: View {
                  "Standard Bank",
                  "TymeBank"
     ]
-    @State var selectedBank = ""
+    @State var selectedBank = "Absa Group"
     
     @State var isNotTapped = true
     
@@ -153,7 +153,7 @@ struct ContentView: View {
                                                     
                                                 TextField("Card Holder Name", text: $cardHolder)
                                             }
-                                            .gesture(TapGesture().onEnded{isNotTapped = true})
+                                            .simultaneousGesture(TapGesture().onEnded{isNotTapped = true})
                                                 
                                             HStack{
                                                 TextField("CVV Number", text: $cvvNumber)
@@ -166,6 +166,7 @@ struct ContentView: View {
                                             }
                                             
                                             TextField("Expiry Date", text: $expiryDate)
+                                                .simultaneousGesture(TapGesture().onEnded{isNotTapped = true})
                                         }
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
                                         .padding()
@@ -220,6 +221,7 @@ struct ContentView: View {
             card.id = UUID()
             card.cardNumber = self.cardNumber
             card.cvvNumber = self.cvvNumber
+            card.expiryDate = self.expiryDate
             
             do {
                 try viewContext.save()
