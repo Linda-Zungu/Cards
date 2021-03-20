@@ -91,41 +91,47 @@ struct ContentView: View {
                                                         
                                                     VStack{
                                                         HStack{
-                                                            Text(isNotTapped ? "\(selectedBank)" : "")
+                                                            Text("\(selectedBank)")
                                                                 .foregroundColor(.white)
                                                                 .font(.title2)
                                                                 .bold()
                                                                 .padding()
+                                                                .opacity(isNotTapped ? 1 : 0.35)
                                                             Spacer()
                                                             Image("\(getCardType(number: cardNumber))")
                                                                 .resizable()
                                                                 .scaledToFit()
                                                                 .clipped()
+                                                                .opacity(isNotTapped ? 1 : 0.25)
                                                                 .frame(width: 50, height: 50)
                                                                 .padding(.horizontal, 10)
                                                         }
                                                         
                                                         Spacer(minLength: 30)
                                                         
-                                                        Text(isNotTapped ? "\(cardNumber)" : "")
+                                                        Text("\(cardNumber)")
                                                             .tracking(7)
                                                             .shadow(radius: 1, y: 2)
                                                             .foregroundColor(.white)
+                                                            .opacity(isNotTapped ? 1 : 0.15)
                                                         
                                                         Spacer(minLength: 5)
-                                                        
-                                                        Text(isNotTapped ? "\(expiryDate)" : "")
+
+                                                        Text("\(expiryDate)")
                                                             .tracking(7)
                                                             .shadow(radius: 1, y: 2)
                                                             .foregroundColor(.white)
+                                                            .opacity(isNotTapped ? 1 : 0)
                                                         
                                                         Spacer(minLength: 5)
                                                         HStack{
-                                                            Text(isNotTapped ? "\(cardHolder)" : "")
+
+                                                            Text("\(cardHolder)")
                                                                 .tracking(3)
                                                                 .shadow(radius: 1, y: 2)
                                                                 .foregroundColor(.white)
                                                                 .padding()
+                                                                .opacity(isNotTapped ? 1 : 0.15)
                                                             
                                                             Spacer()
                                                         }
@@ -252,7 +258,7 @@ struct ContentView: View {
             return "Visa"
         }
         else{
-            return "Nothing"
+            return "NoImage"
         }
     }
 
