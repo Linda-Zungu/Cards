@@ -42,7 +42,7 @@ struct CardRowView: View {
                             
                             Text("\(cardNumber)")
                                 .tracking(0.5)
-                                .padding(.leading, 5)
+                                .padding(.leading, cardNumber.count == 16 ? 5 : 11)
                                 
                             Text("\(expiryDate)")
                                 .offset(x: 28, y: 2)
@@ -99,10 +99,7 @@ struct CardRowView: View {
 
 struct CardRowView_Previews: PreviewProvider {
     static var previews: some View {
-        CardRowView(cardName: "Standard Bank", cardNumber: "0001000200030004", expiryDate: "08/24", cardType: "MasterCard_Dark")
+        CardRowView(cardName: "Standard Bank", cardNumber: "0001000200030", expiryDate: "08/24", cardType: "MasterCard_Dark")
             .previewLayout(.sizeThatFits)
-        CardRowView(cardName: "Standard Bank", cardNumber: "0001000200030004", expiryDate: "08/24", cardType: "MasterCard_Light")
-            .previewLayout(.sizeThatFits)
-            .colorScheme(.dark)
     }
 }
