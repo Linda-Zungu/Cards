@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    
+    @Environment(\.colorScheme) var colorScheme
     @State var isModal = false
     @State var cardNumber = "1234567890123456"
     @State var cardHolder = "Mr L Zungu"
@@ -44,7 +44,7 @@ struct ContentView: View {
         NavigationView{
             List{
                 ForEach(cards){ card in
-                    CardRowView(cardName: card.name ?? "Unknown", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy")
+                    CardRowView(cardName: card.name ?? "Unknown", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy", cardType: card.cardType ?? "")
                 }
                 .onDelete(perform: deleteItems)
             }
@@ -61,6 +61,7 @@ struct ContentView: View {
                             NavigationView{
                                 ScrollView{
                                     VStack{
+//MARK: The Card
                                         BlurView(style: .systemUltraThinMaterial)
                                             .frame(width: UIScreen.main.bounds.width-40, height: 220, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                                             .overlay(
@@ -96,9 +97,15 @@ struct ContentView: View {
                                                                 .bold()
                                                                 .padding()
                                                             Spacer()
+                                                            Image("\(getCardType(number: cardNumber))")
+                                                                .resizable()
+                                                                .scaledToFit()
+                                                                .clipped()
+                                                                .frame(width: 50, height: 50)
+                                                                .padding(.horizontal, 10)
                                                         }
                                                         
-                                                        Spacer(minLength: 40)
+                                                        Spacer(minLength: 30)
                                                         
                                                         Text(isNotTapped ? "\(cardNumber)" : "")
                                                             .tracking(7)
@@ -134,7 +141,7 @@ struct ContentView: View {
                                             .shadow(radius: 10, y: 10)
                                             .padding()
                                             .animation(.spring(response: 0.7, dampingFraction: 0.6, blendDuration: 0.2))
-                                            
+//End of "The Card"//
 
                                         HStack{
                                             Text("Card Details")
@@ -222,26 +229,9 @@ struct ContentView: View {
             card.cardNumber = self.cardNumber
             card.cvvNumber = self.cvvNumber
             card.expiryDate = self.expiryDate
+            card.cardType = getCardType(number: cardNumber)
             
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-            let cardItem = Card(context: viewContext)
-            let cardNames = ["Absa", "Standard Bank", "Nedbank"]
             
-            cardItem.id = UUID()
-            cardItem.name = "\(cardNames.randomElement()!)"
-
             do {
                 try viewContext.save()
             } catch {
@@ -250,6 +240,19 @@ struct ContentView: View {
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
+        }
+    }
+    
+    private func getCardType(number : String) -> String{
+        let num = Array(number)
+        if(num[0] == "5" && num.count == 16){
+            return colorScheme == .dark ? "MasterCard_Light" : "MasterCard_Dark"
+        }
+        else if(num[0] == "4" && (num.count == 16 || num.count == 13)){
+            return "Visa"
+        }
+        else{
+            return "Nothing"
         }
     }
 
