@@ -12,6 +12,7 @@ struct CardRowView: View {
     var cardName : String
     var cardNumber : String
     var expiryDate : String
+    var cardType : String
     
     var body: some View {
         HStack{
@@ -50,13 +51,20 @@ struct CardRowView: View {
                     .font(.headline)
             }
             Spacer()
+            
+            Image("\(self.cardType)")
+                .resizable()
+                .clipped()
+                .scaledToFit()
+                .frame(width: 20, height: 20, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .padding(.bottom, 30)
         }
     }
 }
 
 struct CardRowView_Previews: PreviewProvider {
     static var previews: some View {
-        CardRowView(cardName: "Standard Bank", cardNumber: "0001000200030004", expiryDate: "08/24")
+        CardRowView(cardName: "Standard Bank", cardNumber: "0001000200030004", expiryDate: "08/24", cardType: "MasterCard_Dark")
             .previewLayout(.sizeThatFits)
     }
 }
