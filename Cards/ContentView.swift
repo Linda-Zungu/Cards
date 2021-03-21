@@ -63,59 +63,9 @@ struct ContentView: View {
                             NavigationView{
                                 ScrollView{
                                     VStack{
-//MARK: The Card
-                                        CardView(isNotTapped: isNotTapped, cvvNumber: cvvNumber , cardNumber: cardNumber , expiryDate: expiryDate , selectedBank: selectedBank , cardHolder: cardHolder)
-//End of "The Card"//
+                                        CardView(isNotTapped: isNotTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
 
-                                        HStack{
-                                            Text("Card Details")
-                                                .padding()
-                                                .foregroundColor(.primary)
-                                                .textCase(/*@START_MENU_TOKEN@*/.uppercase/*@END_MENU_TOKEN@*/)
-                                            Spacer()
-                                        }
-                                        Divider()
-                                            .padding(.horizontal)
-                                        
-                                        Group{
-                                            Group{
-                                                TextField("Card Number", text: $cardNumber)
-                                                    .keyboardType(.numberPad)
-                                                    
-                                                TextField("Card Holder Name", text: $cardHolder)
-                                            }
-                                            .simultaneousGesture(TapGesture().onEnded{isNotTapped = true})
-                                                
-                                            HStack{
-                                                TextField("CVV Number", text: $cvvNumber)
-                                                    .keyboardType(.numberPad)
-                                                    .simultaneousGesture(TapGesture().onEnded{isNotTapped = false})
-                                                    
-                                                Spacer()
-                                                Image(systemName: "creditcard")
-                                                    .font(.system(size: 25))
-                                            }
-                                            
-                                            TextField("Expiry Date", text: $expiryDate)
-                                                .simultaneousGesture(TapGesture().onEnded{isNotTapped = true})
-                                        }
-                                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                                        .padding()
-                                        .foregroundColor(.primary)
-                                        
-                                        Divider()
-                                            .padding(.horizontal)
-                                        
-                                        Text("Pick Your Bank")
-                                            .font(.headline)
-                                            .foregroundColor(.gray)
-                                        
-                                        Picker("Pick Your Bank", selection: $selectedBank){
-                                            ForEach(banks, id: \.self){
-                                                Text($0)
-                                            }
-                                        }
-                                        .padding(.horizontal)
+                                        CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped)
                                         
                                         Spacer()
                                         
@@ -125,6 +75,7 @@ struct ContentView: View {
                                             
                                         }, label: {
                                             Text("+ Save")
+                                                .padding()
                                         })
                                     }
                                 }
