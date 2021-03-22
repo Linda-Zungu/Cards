@@ -108,21 +108,24 @@ struct CardView: View {
     
     private func getCardType(number : String) -> String{
         let num = Array(number)
-        if(num[0] == "5" && num.count == 16){
-            return colorScheme == .dark ? "MasterCard_Light" : "MasterCard_Dark"
+        if(num.count > 0){
+            if(num[0] == "5" && num.count == 16){
+                return colorScheme == .dark ? "MasterCard_Light" : "MasterCard_Dark"
+            }
+            else if(num[0] == "4" && (num.count == 16 || num.count == 13)){
+                return "Visa"
+            }
+            else{
+                return "NoImage"
+            }
         }
-        else if(num[0] == "4" && (num.count == 16 || num.count == 13)){
-            return "Visa"
-        }
-        else{
-            return "NoImage"
-        }
+        return "NoImage"
     }
 }
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(isNotTapped: true, cvvNumber: "123", cardNumber: "5123456789012345", expiryDate: "11/22", selectedBank: "Absa Bank", cardHolder: "Mr L Zungu")
+        CardView(isNotTapped: false, cvvNumber: "123", cardNumber: "5123456789012345", expiryDate: "11/22", selectedBank: "Absa Bank", cardHolder: "Mr L Zungu")
             .previewLayout(.sizeThatFits)
     }
 }
