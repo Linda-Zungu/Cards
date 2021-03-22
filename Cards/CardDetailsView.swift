@@ -44,8 +44,12 @@ struct CardDetailsView: View {
             
             Group{
                 Group{
-                    TextField("Card Number", text: $cardNumber)
-                        .keyboardType(.numberPad)
+                    HStack{
+                        TextField("Card Number", text: $cardNumber)
+                            .keyboardType(.numberPad)
+                        Spacer()
+                        VerifiedView(cardNumber: cardNumber)
+                    }                    
                         
                     TextField("Card Holder Name", text: $cardHolder)
                 }
