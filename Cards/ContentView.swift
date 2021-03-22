@@ -44,7 +44,7 @@ struct ContentView: View {
         NavigationView{
             List{
                 ForEach(cards){ card in
-                    NavigationLink(destination: CardView(isNotTapped: isNotTapped, cvvNumber: card.cvvNumber ?? "---", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy", selectedBank: card.name ?? "Unknown", cardHolder: card.cardHolder ?? "unknown")){
+                    NavigationLink(destination: CardInfoView(cardNumber: card.cardNumber ?? "Card Number", cardHolder: card.cardHolder ?? "unknown", cvvNumber: card.cvvNumber ?? "---", selectedBank: card.name ?? "Unknown", expiryDate: card.expiryDate ?? "mm/yy", isNotTapped: isNotTapped)){
                         CardRowView(cardName: card.name ?? "Unknown", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy", cardType: card.cardType ?? "")
                     }
                 }
