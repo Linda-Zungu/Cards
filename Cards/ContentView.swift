@@ -31,6 +31,7 @@ struct ContentView: View {
     @State var selectedBank = "Absa Group"
     
     @State var isNotTapped = true
+    @State var isTapped = true
     
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -59,12 +60,12 @@ struct ContentView: View {
                 }, label: {
                     Text("Add Card")
                         .font(.body)
-                        .sheet(isPresented: $isModal){
+                        .sheet(isPresented: $isModal, onDismiss: {isNotTapped = true}){
                             NavigationView{
                                 ZStack{
                                     ScrollView{
                                         VStack{
-                                            CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped)
+                                            CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped)
                                                 .padding(.top, 290)
                                             
                                             Spacer()
@@ -72,7 +73,8 @@ struct ContentView: View {
                                             Button(action: {
                                                 addCard()
                                                 isModal = false
-                                                
+                                                isTapped = true
+                                                isNotTapped = true
                                             }, label: {
                                                 Text("+ Save")
                                                     .padding()
@@ -80,7 +82,7 @@ struct ContentView: View {
                                         }
                                     }
                                     VStack{
-                                        CardView(isNotTapped: isNotTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
+                                        CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
                                         
                                         Spacer()
                                     }
@@ -89,6 +91,8 @@ struct ContentView: View {
                                 .navigationBarItems(trailing:
                                     Button(action: {
                                         isModal = false
+                                        isTapped = true
+                                        isNotTapped = true
                                     }, label: {
                                         Text("Cancel")
                                     })

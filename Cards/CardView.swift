@@ -11,6 +11,7 @@ struct CardView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var isNotTapped : Bool
+    var isTapped : Bool
     
     var cvvNumber : String
     var cardNumber : String
@@ -94,6 +95,7 @@ struct CardView: View {
                         }
                     }
                 }
+                .animation(.spring(response: 0.7, dampingFraction: 0.6, blendDuration: 0.2))
                 
             )
             .cornerRadius(15)
@@ -105,7 +107,7 @@ struct CardView: View {
             .padding(.horizontal)
             .shadow(color: Color.init(.displayP3, white: 0, opacity: 0.25), radius: 25, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 20)
             .background(colorScheme == .light ? LinearGradient(gradient: Gradient(colors: [Color.white, Color.init(.displayP3, white: 1, opacity: 0.8), Color.init(.displayP3, white: 1, opacity: 0)]), startPoint: .top, endPoint: .bottom) : LinearGradient(gradient: Gradient(colors: [Color.init(.displayP3, white: 0, opacity: 1), Color.clear]), startPoint: .top, endPoint: .bottom))
-            .animation(.spring(response: 0.7, dampingFraction: 0.6, blendDuration: 0.2))
+            .animation(.spring(response: isTapped ? (isNotTapped ? 3.0 : 0.7): (isTapped ? 3.0 : 0.7) , dampingFraction: 0.6, blendDuration: 0.2))
             
             
     }
@@ -129,7 +131,7 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(isNotTapped: true, cvvNumber: "123", cardNumber: "5123456789012345", expiryDate: "11/22", selectedBank: "Absa Bank", cardHolder: "Mr L Zungu")
+        CardView(isNotTapped: true, isTapped: false, cvvNumber: "123", cardNumber: "5123456789012345", expiryDate: "11/22", selectedBank: "Absa Bank", cardHolder: "Mr L Zungu")
             .previewLayout(.sizeThatFits)
     }
 }

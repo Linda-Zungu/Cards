@@ -16,14 +16,17 @@ struct CardInfoView: View {
     var selectedBank : String
     var expiryDate : String
     var isNotTapped : Bool
+    
+    @State var isTapped = true
 
     @State var isCardNotTapped = true
     var body: some View {
         ScrollView{
             VStack{
-                CardView(isNotTapped: isCardNotTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
+                CardView(isNotTapped: isCardNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
                     .onTapGesture {
                         isCardNotTapped.toggle()
+                        isTapped = false
                     }
                     
             }

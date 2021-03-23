@@ -29,6 +29,7 @@ struct CardDetailsView: View {
     
     @Binding var selectedBank : String
     @Binding var isNotTapped : Bool
+    @Binding var isTapped : Bool
     
     var body: some View {
         VStack{
@@ -53,12 +54,18 @@ struct CardDetailsView: View {
                         
                     TextField("Card Holder Name", text: $cardHolder)
                 }
-                .simultaneousGesture(TapGesture().onEnded{isNotTapped = true})
+                .simultaneousGesture(TapGesture().onEnded{
+                    isNotTapped = true
+                    isTapped = false
+                })
                     
                 HStack{
                     TextField("CVV Number", text: $cvvNumber)
                         .keyboardType(.numberPad)
-                        .simultaneousGesture(TapGesture().onEnded{isNotTapped = false})
+                        .simultaneousGesture(TapGesture().onEnded{
+                            isNotTapped = false
+                            isTapped = true
+                        })
                         
                     Spacer()
                     Image(systemName: "creditcard")
@@ -66,7 +73,10 @@ struct CardDetailsView: View {
                 }
                 
                 TextField("Expiry Date", text: $expiryDate)
-                    .simultaneousGesture(TapGesture().onEnded{isNotTapped = true})
+                    .simultaneousGesture(TapGesture().onEnded{
+                        isNotTapped = true
+                        isTapped = false
+                    })
             }
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
@@ -92,6 +102,6 @@ struct CardDetailsView: View {
 
 struct CardDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CardDetailsView(cardNumber: Binding.constant(""), cardHolder: Binding.constant(""), cvvNumber: Binding.constant(""), expiryDate: Binding.constant(""), selectedBank: Binding.constant(""), isNotTapped: Binding.constant(true))
+        CardDetailsView(cardNumber: Binding.constant(""), cardHolder: Binding.constant(""), cvvNumber: Binding.constant(""), expiryDate: Binding.constant(""), selectedBank: Binding.constant(""), isNotTapped: Binding.constant(true), isTapped: Binding.constant(true))
     }
 }
