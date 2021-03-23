@@ -61,24 +61,31 @@ struct ContentView: View {
                         .font(.body)
                         .sheet(isPresented: $isModal){
                             NavigationView{
-                                ScrollView{
+                                ZStack{
+                                    ScrollView{
+                                        VStack{
+                                            CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped)
+                                                .padding(.top, 290)
+                                            
+                                            Spacer()
+                                            
+                                            Button(action: {
+                                                addCard()
+                                                isModal = false
+                                                
+                                            }, label: {
+                                                Text("+ Save")
+                                                    .padding()
+                                            })
+                                        }
+                                    }
                                     VStack{
                                         CardView(isNotTapped: isNotTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
-
-                                        CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped)
                                         
                                         Spacer()
-                                        
-                                        Button(action: {
-                                            addCard()
-                                            isModal = false
-                                            
-                                        }, label: {
-                                            Text("+ Save")
-                                                .padding()
-                                        })
                                     }
                                 }
+                                
                                 .navigationBarItems(trailing:
                                     Button(action: {
                                         isModal = false
