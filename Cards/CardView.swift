@@ -24,6 +24,9 @@ struct CardView: View {
             .frame(width: UIScreen.main.bounds.width-40, height: 220, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             .overlay(
                 ZStack{
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.white.opacity(0.75), lineWidth: 2)
+                    
                     VStack{
                         BlurView(style: .systemChromeMaterial)
                             .opacity(isNotTapped ? 0 : 1)
