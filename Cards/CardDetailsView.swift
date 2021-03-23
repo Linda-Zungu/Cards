@@ -86,6 +86,7 @@ struct CardDetailsView: View {
             }
             .padding(.horizontal)
         }
+        .padding(.horizontal)
     }
 }
 
