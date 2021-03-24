@@ -41,28 +41,31 @@ struct CardInfoView: View {
                 MapView()
                     .frame(width: UIScreen.main.bounds.width-(isMapTapped ? 40 : 0), height: isMapTapped ? 450 : UIScreen.main.bounds.height+50)
                     .cornerRadius(isMapTapped ? 15 : 0)
-                    .padding(.top, isMapTapped ? 270 : 0)
-                    .onTapGesture {
-                        isMapTapped.toggle()
-                    }
                     .shadow(radius: 20, y: 20)
                     .overlay(
-                        Button(action: {
-                            isMapTapped.toggle()
-                        }, label: {
-                            BlurView(style: .systemUltraThinMaterial)
-                                    .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                                .cornerRadius(10)
-                                .overlay(
-                                    Image(systemName: "rectangle.expand.vertical")
-                                        .font(.system(size: 22))
-                                        .foregroundColor(.primary)
-                                )
-                                .shadow(color: .init(.displayP3, white: 0, opacity: 0.2),radius: 10)
-                                .padding(.trailing, isMapTapped ? 280 : 320)
-                                .padding(.bottom, isMapTapped ? 110 : UIScreen.main.bounds.height-195)
-                        })
-                        
+                        VStack{
+                            HStack(alignment: .top){
+                                Button(action: {
+                                    isMapTapped.toggle()
+                                }, label: {
+                                        BlurView(style: .systemUltraThinMaterial)
+                                                .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                            .cornerRadius(10)
+                                            .overlay(
+                                                Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")
+                                                    .font(.system(size: 27))
+                                                    .foregroundColor(.primary)
+                                            )
+                                            .shadow(color: .init(.displayP3, white: 0, opacity: 0.2),radius: 10)
+                                            .padding(isMapTapped ? 8 : 0)
+                                            .padding(.top, isMapTapped ? 0 : 100)
+                                            .padding(.leading, isMapTapped ? 0 : 8)
+                                    
+                                    })
+                                Spacer()
+                            }
+                            Spacer()
+                        }
                     )
                     .animation(.spring())
                     .edgesIgnoringSafeArea(.top)
