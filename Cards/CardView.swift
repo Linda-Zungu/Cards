@@ -25,7 +25,7 @@ struct CardView: View {
             .overlay(
                 ZStack{
                     RoundedRectangle(cornerRadius: 15)
-                        .stroke(Color.white.opacity(0.75), lineWidth: 2)
+                        .stroke(colorScheme == .light ? Color.white.opacity(0.75) : Color.init(UIColor.secondarySystemFill), lineWidth: 2)
                     
                     VStack{
                         BlurView(style: .systemChromeMaterial)
