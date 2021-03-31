@@ -16,7 +16,7 @@ struct ContentView: View {
     @State var cvvNumber = "123"
     @State var expiryDate = "08/24"
     
-    var banks = ["Absa Group",
+    var banks = ["Absa Bank",
                  "African Bank",
                  "Bidvest Bank",
                  "Capitec Bank",
@@ -28,7 +28,7 @@ struct ContentView: View {
                  "Standard Bank",
                  "TymeBank"
     ]
-    @State var selectedBank = "Absa Group"
+    @State var selectedBank = "Absa Bank"
     
     @State var isNotTapped = true
     @State var isTapped = true
