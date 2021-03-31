@@ -14,7 +14,7 @@ struct CardDetailsView: View {
     @Binding var cvvNumber : String
     @Binding var expiryDate : String
     
-    var banks = ["Absa Group",
+    var banks = ["Absa Bank",
                  "African Bank",
                  "Bidvest Bank",
                  "Capitec Bank",
