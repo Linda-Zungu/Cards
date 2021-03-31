@@ -46,13 +46,15 @@ struct CardDetailsView: View {
             Group{
                 Group{
                     HStack{
-                        TextField("Card Number", text: $cardNumber)
+//                        TextField("Card Number", text: $cardNumber)
+                        DoneTextField(placeholder: "Card Number", text: $cardNumber, keyBoardType: .default)
                             .keyboardType(.numberPad)
                         Spacer()
                         VerifiedView(cardNumber: cardNumber)
                     }                    
                         
-                    TextField("Card Holder Name", text: $cardHolder)
+//                    TextField("Card Holder Name", text: $cardHolder)
+                    DoneTextField(placeholder: "Card Holder Name", text: $cardHolder, keyBoardType: .default)
                 }
                 .simultaneousGesture(TapGesture().onEnded{
                     isNotTapped = true
@@ -60,19 +62,20 @@ struct CardDetailsView: View {
                 })
                     
                 HStack{
-                    TextField("CVV Number", text: $cvvNumber)
-                        .keyboardType(.numberPad)
+                    DoneTextField(placeholder: "CVV Number", text: $cvvNumber, keyBoardType: .numberPad)
                         .simultaneousGesture(TapGesture().onEnded{
                             isNotTapped = false
                             isTapped = true
                         })
+                        .frame(width: 290, height: 0, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         
                     Spacer()
                     Image(systemName: "creditcard")
                         .font(.system(size: 25))
                 }
                 
-                TextField("Expiry Date", text: $expiryDate)
+//                TextField("Expiry Date", text: $expiryDate)
+                DoneTextField(placeholder: "Expiry Date", text: $expiryDate, keyBoardType: .default)
                     .simultaneousGesture(TapGesture().onEnded{
                         isNotTapped = true
                         isTapped = false
