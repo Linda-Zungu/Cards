@@ -20,6 +20,7 @@
 		646B59F32607A3C70060EA2D /* CardInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646B59F22607A3C70060EA2D /* CardInfoView.swift */; };
 		647761E325EE7F9B0043FE32 /* CardRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647761E225EE7F9B0043FE32 /* CardRowView.swift */; };
 		64DD745F260B99190036CCD3 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD745E260B99190036CCD3 /* MapView.swift */; };
+		64EC7230261489C600C5D6A8 /* DoneTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EC722F261489C600C5D6A8 /* DoneTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		646B59F22607A3C70060EA2D /* CardInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardInfoView.swift; sourceTree = "<group>"; };
 		647761E225EE7F9B0043FE32 /* CardRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRowView.swift; sourceTree = "<group>"; };
 		64DD745E260B99190036CCD3 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		64EC722F261489C600C5D6A8 /* DoneTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				646B59F22607A3C70060EA2D /* CardInfoView.swift */,
 				64DD745E260B99190036CCD3 /* MapView.swift */,
 				646B59EA2606BC620060EA2D /* CardDetailsView.swift */,
+				64EC722F261489C600C5D6A8 /* DoneTextField.swift */,
 				646B59E726069E320060EA2D /* CardView.swift */,
 				647761E225EE7F9B0043FE32 /* CardRowView.swift */,
 				6417BCCE25F2C644001AAF68 /* BlurView.swift */,
@@ -174,6 +177,7 @@
 				645060C325EE741D005A2DF8 /* ContentView.swift in Sources */,
 				645060C125EE741D005A2DF8 /* CardsApp.swift in Sources */,
 				646B59E826069E330060EA2D /* CardView.swift in Sources */,
+				64EC7230261489C600C5D6A8 /* DoneTextField.swift in Sources */,
 				646B59EB2606BC620060EA2D /* CardDetailsView.swift in Sources */,
 				645060CD25EE741F005A2DF8 /* Cards.xcdatamodeld in Sources */,
 			);
