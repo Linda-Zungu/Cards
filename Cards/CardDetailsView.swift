@@ -14,7 +14,8 @@ struct CardDetailsView: View {
     @Binding var cvvNumber : String
     @Binding var expiryDate : String
     
-    var banks = ["Absa Bank",
+    var banks = ["Choose Bank",
+                 "Absa Bank",
                  "African Bank",
                  "Bidvest Bank",
                  "Capitec Bank",
@@ -67,7 +68,6 @@ struct CardDetailsView: View {
                             isNotTapped = false
                             isTapped = true
                         })
-                        .frame(width: 290, height: 0, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         
                     Spacer()
                     Image(systemName: "creditcard")
