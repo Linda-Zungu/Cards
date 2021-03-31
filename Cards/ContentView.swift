@@ -11,12 +11,13 @@ import CoreData
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var isModal = false
-    @State var cardNumber = "1234567890123456"
-    @State var cardHolder = "Mr L Zungu"
-    @State var cvvNumber = "123"
-    @State var expiryDate = "08/24"
+    @State var cardNumber = ""
+    @State var cardHolder = ""
+    @State var cvvNumber = ""
+    @State var expiryDate = ""
     
-    var banks = ["Absa Bank",
+    var banks = ["Choose Bank",
+                 "Absa Bank",
                  "African Bank",
                  "Bidvest Bank",
                  "Capitec Bank",
@@ -28,7 +29,7 @@ struct ContentView: View {
                  "Standard Bank",
                  "TymeBank"
     ]
-    @State var selectedBank = "Absa Bank"
+    @State var selectedBank = "Choose Bank"
     
     @State var isNotTapped = true
     @State var isTapped = true
@@ -69,16 +70,6 @@ struct ContentView: View {
                                                 .padding(.top, 290)
                                             
                                             Spacer()
-                                            
-                                            Button(action: {
-                                                addCard()
-                                                isModal = false
-                                                isTapped = true
-                                                isNotTapped = true
-                                            }, label: {
-                                                Text("+ Save")
-                                                    .padding()
-                                            })
                                         }
                                     }
                                     VStack{
@@ -88,14 +79,33 @@ struct ContentView: View {
                                     }
                                 }
                                 
-                                .navigationBarItems(trailing:
+                                .navigationBarItems(leading:
                                     Button(action: {
                                         isModal = false
                                         isTapped = true
                                         isNotTapped = true
                                     }, label: {
                                         Text("Cancel")
-                                    })
+                                    }), trailing:
+                                        Button(action: {
+                                            if(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" &&
+                                                cvvNumber != "" && expiryDate != ""){
+                                                addCard()
+                                                isModal = false
+                                                isTapped = true
+                                                isNotTapped = true
+
+                                                cardNumber = ""
+                                                cardHolder = ""
+                                                cvvNumber = ""
+                                                expiryDate = ""
+                                                selectedBank = banks[0]
+                                            }
+                                        }, label: {
+                                            Text("+ Save")
+                                                .foregroundColor(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" && cvvNumber != "" && expiryDate != "" ? .blue : .gray)
+                                        })
+                                        .disabled(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" && cvvNumber != "" && expiryDate != "" ? false : true)
                                 )
                                 .navigationTitle("Add Card")
                                 .navigationBarTitleDisplayMode(.inline)
