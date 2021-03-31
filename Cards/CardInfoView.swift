@@ -38,7 +38,7 @@ struct CardInfoView: View {
             VStack{
                 Spacer(minLength: isMapTapped ? 10 : 0)
                 
-                MapView()
+                MapView(nameOfBank: selectedBank)
                     .frame(width: UIScreen.main.bounds.width-(isMapTapped ? 40 : 0), height: isMapTapped ? 450 : UIScreen.main.bounds.height+50)
                     .cornerRadius(isMapTapped ? 15 : 0)
                     .shadow(radius: 20, y: 20)
@@ -67,7 +67,7 @@ struct CardInfoView: View {
                             Spacer()
                         }
                     )
-                    .animation(.spring())
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.4))
                     .edgesIgnoringSafeArea(.top)
             }
         }
