@@ -109,7 +109,7 @@ struct CardView: View {
             .padding()
             .padding(.horizontal)
             .shadow(color: Color.init(.displayP3, white: 0, opacity: 0.25), radius: 25, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 20)
-            .animation(.spring(response: isTapped ? (isNotTapped ? 3.0 : 0.7): (isTapped ? 3.0 : 0.7) , dampingFraction: 0.6, blendDuration: 0.2))
+            .animation(.spring(response: isTapped ? (isNotTapped ? 2.0 : 0.7): (isTapped ? 2.0 : 0.7) , dampingFraction: 0.6, blendDuration: 0.2))
             .background(colorScheme == .light ? LinearGradient(gradient: Gradient(colors: [Color.white, Color.init(.displayP3, white: 1, opacity: 0.8), Color.init(.displayP3, white: 1, opacity: 0)]), startPoint: .top, endPoint: .bottom) : LinearGradient(gradient: Gradient(colors: [Color.init(.displayP3, white: 0, opacity: 1), Color.clear]), startPoint: .top, endPoint: .bottom))
             
             
