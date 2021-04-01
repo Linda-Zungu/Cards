@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct CardDetailsView: View {
     
@@ -47,14 +48,18 @@ struct CardDetailsView: View {
             Group{
                 Group{
                     HStack{
-//                        TextField("Card Number", text: $cardNumber)
                         DoneTextField(placeholder: "Card Number", text: $cardNumber, keyBoardType: .default)
                             .keyboardType(.numberPad)
+                            .onReceive(Just(3)) { inputValue in
+                                // With a little help from https://bit.ly/2W1Ljzp
+                                if cardNumber.count > 16 {
+                                    self.cardNumber.removeLast()
+                                }
+                            }
                         Spacer()
                         VerifiedView(cardNumber: cardNumber)
                     }                    
                         
-//                    TextField("Card Holder Name", text: $cardHolder)
                     DoneTextField(placeholder: "Card Holder Name", text: $cardHolder, keyBoardType: .default)
                 }
                 .simultaneousGesture(TapGesture().onEnded{
@@ -68,18 +73,27 @@ struct CardDetailsView: View {
                             isNotTapped = false
                             isTapped = true
                         })
+                        .onReceive(Just(3)) { inputValue in
+                            if cvvNumber.count > 3 {
+                                self.cvvNumber.removeLast()
+                            }
+                        }
                         
                     Spacer()
                     Image(systemName: "creditcard")
                         .font(.system(size: 25))
                 }
                 
-//                TextField("Expiry Date", text: $expiryDate)
                 DoneTextField(placeholder: "Expiry Date", text: $expiryDate, keyBoardType: .default)
                     .simultaneousGesture(TapGesture().onEnded{
                         isNotTapped = true
                         isTapped = false
                     })
+                    .onReceive(Just(3)) { inputValue in
+                        if expiryDate.count > 5 {
+                            self.expiryDate.removeLast()
+                        }
+                    }
             }
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
