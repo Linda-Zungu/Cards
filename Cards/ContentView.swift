@@ -84,6 +84,12 @@ struct ContentView: View {
                                         isModal = false
                                         isTapped = true
                                         isNotTapped = true
+                                        
+                                        cardNumber = ""
+                                        cardHolder = ""
+                                        cvvNumber = ""
+                                        expiryDate = ""
+                                        selectedBank = banks[0]
                                     }, label: {
                                         Text("Cancel")
                                     }), trailing:
@@ -103,9 +109,9 @@ struct ContentView: View {
                                             }
                                         }, label: {
                                             Text("+ Save")
-                                                .foregroundColor(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" && cvvNumber != "" && expiryDate != "" ? .blue : .gray)
+                                                .foregroundColor(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
                                         })
-                                        .disabled(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" && cvvNumber != "" && expiryDate != "" ? false : true)
+                                        .disabled(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
                                 )
                                 .navigationTitle("Add Card")
                                 .navigationBarTitleDisplayMode(.inline)
@@ -167,6 +173,11 @@ struct ContentView: View {
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
+    }
+    
+    private func checkTextField(number : String) -> Bool{
+        let num = Array(number)
+        return ((num.count == 13 || num.count == 16) && num[0] == "4") || (num.count == 16 && num[0] == "5")
     }
 }
 
