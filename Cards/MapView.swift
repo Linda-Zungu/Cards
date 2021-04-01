@@ -30,7 +30,7 @@ struct MapView: UIViewRepresentable {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
             let location: CLLocationCoordinate2D = locationManager.location!.coordinate
-            let span = MKCoordinateSpan(latitudeDelta: 0.059, longitudeDelta: 0.059)
+            let span = MKCoordinateSpan(latitudeDelta: 0.15, longitudeDelta: 0.15)
             let region = MKCoordinateRegion(center: location, span: span)
             uiView.setRegion(region, animated: true)
             
