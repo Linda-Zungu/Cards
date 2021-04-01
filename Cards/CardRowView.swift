@@ -17,7 +17,7 @@ struct CardRowView: View {
     var body: some View {
         HStack{
             RoundedRectangle(cornerRadius: 5)
-                .frame(width: 70, height: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .frame(width: 70, height: 45, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 .overlay(
                     VStack(alignment: .leading){
                         Group{
