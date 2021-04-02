@@ -12,6 +12,7 @@ struct CardView: View {
     
     var isNotTapped : Bool
     var isTapped : Bool
+    @State var wave = false
     
     var cvvNumber : String
     var cardNumber : String
@@ -110,9 +111,42 @@ struct CardView: View {
             .padding(.horizontal)
             .shadow(color: Color.init(.displayP3, white: 0, opacity: 0.25), radius: 25, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 20)
             .animation(.spring(response: isTapped ? (isNotTapped ? 2.0 : 0.7): (isTapped ? 2.0 : 0.7) , dampingFraction: 0.6, blendDuration: 0.2))
-            .background(colorScheme == .light ? LinearGradient(gradient: Gradient(colors: [Color.white, Color.init(.displayP3, white: 1, opacity: 0.8), Color.init(.displayP3, white: 1, opacity: 0)]), startPoint: .top, endPoint: .bottom) : LinearGradient(gradient: Gradient(colors: [Color.init(.displayP3, white: 0, opacity: 1), Color.clear]), startPoint: .top, endPoint: .bottom))
-            
-            
+            .background(
+                Group{
+                    colorScheme == .light ? LinearGradient(gradient: Gradient(colors: [Color.white, Color.init(.displayP3, white: 1, opacity: 0.8), Color.init(.displayP3, white: 1, opacity: 0)]), startPoint: .top, endPoint: .bottom) :
+                        LinearGradient(gradient: Gradient(colors: [Color.init(.displayP3, white: 0, opacity: 1), Color.clear]), startPoint: .top, endPoint: .bottom)
+                }
+                .overlay(
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 10)//not grad
+                            .foregroundColor(.clear)
+                            .background(
+                                LinearGradient(gradient: Gradient(colors: [Color.red, Color.red]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/)
+                                    .cornerRadius(5)
+                            )
+                            .frame(width: 130, height: 105, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .scaleEffect(2, anchor: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .animation(Animation.spring(response: 0.55, dampingFraction: 3.6, blendDuration: 0.9).speed(0.8).delay(0.4))
+                            .offset(x: 0, y: 12)
+                            .shadow(color: Color.init(.displayP3, white: 0, opacity: 0.25), radius: 5, y: 5)
+                        
+                        
+                        RoundedRectangle(cornerRadius: 10)//grad
+                            .foregroundColor(.clear)
+                            .background(
+                                LinearGradient(gradient: /*@START_MENU_TOKEN@*/Gradient(colors: [Color.red, Color.blue])/*@END_MENU_TOKEN@*/, startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/)
+                                    .cornerRadius(5)
+                            )
+                            .frame(width: 150, height: 105, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .scaleEffect(2, anchor: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .animation(Animation.spring(response: 0.45, dampingFraction: 2.9, blendDuration: 0.9).speed(1.0).delay(0.3))
+                            .offset(x: 0, y: 9)
+                            .shadow(color: Color.init(.displayP3, white: 0, opacity: 0.25), radius: 5, y: 5)
+                        
+                        
+                    }
+                )
+            )
     }
     
     private func getCardType(number : String) -> String{
