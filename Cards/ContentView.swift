@@ -55,73 +55,74 @@ struct ContentView: View {
             .listStyle(InsetGroupedListStyle())
             
         
-            .navigationBarItems(trailing:
-                Button(action: {
-                    isModal = true
-                }, label: {
-                    Text("Add Card")
-                        .font(.body)
-                        .sheet(isPresented: $isModal, onDismiss: {isNotTapped = true}){
-                            NavigationView{
-                                ZStack{
-                                    ScrollView{
-                                        VStack{
-                                            CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped)
-                                                .padding(.top, 290)
-                                            
-                                            Spacer()
-                                        }
-                                    }
+            .navigationBarItems(trailing:                     
+            Button(action: {
+                isModal = true
+            }, label: {
+                Text("Add Card")
+                    .font(.body)
+                    .sheet(isPresented: $isModal, onDismiss: {isNotTapped = true}){
+                        NavigationView{
+                            ZStack{
+                                ScrollView{
                                     VStack{
-                                        CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
+                                        CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped)
+                                            .padding(.top, 290)
                                         
                                         Spacer()
                                     }
                                 }
-                                
-                                .navigationBarItems(leading:
-                                    Button(action: {
-                                        isModal = false
-                                        isTapped = true
-                                        isNotTapped = true
-                                        
-                                        cardNumber = ""
-                                        cardHolder = ""
-                                        cvvNumber = ""
-                                        expiryDate = ""
-                                        selectedBank = banks[0]
-                                    }, label: {
-                                        Text("Cancel")
-                                    }), trailing:
-                                        Button(action: {
-                                            if(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" &&
-                                                cvvNumber != "" && expiryDate != ""){
-                                                addCard()
-                                                isModal = false
-                                                isTapped = true
-                                                isNotTapped = true
-
-                                                cardNumber = ""
-                                                cardHolder = ""
-                                                cvvNumber = ""
-                                                expiryDate = ""
-                                                selectedBank = banks[0]
-                                            }
-                                        }, label: {
-                                            Text("+ Save")
-                                                .foregroundColor(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
-                                        })
-                                        .disabled(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
-                                )
-                                .navigationTitle("Add Card")
-                                .navigationBarTitleDisplayMode(.inline)
+                                VStack{
+                                    CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
+                                    
+                                    Spacer()
+                                }
                             }
+                            
+                            .navigationBarItems(leading:
+                                Button(action: {
+                                    isModal = false
+                                    isTapped = true
+                                    isNotTapped = true
+                                    
+                                    cardNumber = ""
+                                    cardHolder = ""
+                                    cvvNumber = ""
+                                    expiryDate = ""
+                                    selectedBank = banks[0]
+                                }, label: {
+                                    Text("Cancel")
+                                }), trailing:
+                                    Button(action: {
+                                        if(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" &&
+                                            cvvNumber != "" && expiryDate != ""){
+                                            addCard()
+                                            isModal = false
+                                            isTapped = true
+                                            isNotTapped = true
+
+                                            cardNumber = ""
+                                            cardHolder = ""
+                                            cvvNumber = ""
+                                            expiryDate = ""
+                                            selectedBank = banks[0]
+                                        }
+                                    }, label: {
+                                        Text("+ Save")
+                                            .foregroundColor(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
+                                    })
+                                    .disabled(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
+                            )
+                            .navigationTitle("Add Card")
+                            .navigationBarTitleDisplayMode(.inline)
                         }
-                        .font(.none)
                     }
+                    .font(.none)
+                }
             ))
             .navigationTitle("Cards")
         }
+        
     }
     
     private func addCard(){
