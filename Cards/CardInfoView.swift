@@ -41,7 +41,7 @@ struct CardInfoView: View {
                 MapView(nameOfBank: selectedBank)
                     .frame(width: UIScreen.main.bounds.width-(isMapTapped ? 40 : 0), height: isMapTapped ? 450 : UIScreen.main.bounds.height+50)
                     .cornerRadius(isMapTapped ? 15 : 0)
-                    .shadow(radius: 20, y: 20)
+                    .shadow(radius: 5, y: 6)
                     .overlay(
                         VStack{
                             HStack(alignment: .top){
