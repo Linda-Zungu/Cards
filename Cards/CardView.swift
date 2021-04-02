@@ -118,10 +118,10 @@ struct CardView: View {
                 }
                 .overlay(
                     ZStack{
-                        RoundedRectangle(cornerRadius: 10)//not grad
+                        RoundedRectangle(cornerRadius: 10)//not gradient
                             .foregroundColor(.clear)
                             .background(
-                                LinearGradient(gradient: Gradient(colors: [Color.red, Color.red]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/)
+                                getColorForLowerCard(bankName: selectedBank)
                                     .cornerRadius(5)
                             )
                             .frame(width: 130, height: 105, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -129,21 +129,19 @@ struct CardView: View {
                             .animation(Animation.spring(response: 0.55, dampingFraction: 3.6, blendDuration: 0.9).speed(0.8).delay(0.4))
                             .offset(x: 0, y: 12)
                             .shadow(color: Color.init(.displayP3, white: 0, opacity: 0.25), radius: 5, y: 5)
-                        
-                        
-                        RoundedRectangle(cornerRadius: 10)//grad
+                            
+                        RoundedRectangle(cornerRadius: 10)//has gradient
                             .foregroundColor(.clear)
                             .background(
-                                LinearGradient(gradient: /*@START_MENU_TOKEN@*/Gradient(colors: [Color.red, Color.blue])/*@END_MENU_TOKEN@*/, startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/)
+                                getColorForBank(bankName: selectedBank)
                                     .cornerRadius(5)
+                                    .animation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true))
                             )
                             .frame(width: 150, height: 105, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                             .scaleEffect(2, anchor: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                             .animation(Animation.spring(response: 0.45, dampingFraction: 2.9, blendDuration: 0.9).speed(1.0).delay(0.3))
                             .offset(x: 0, y: 9)
                             .shadow(color: Color.init(.displayP3, white: 0, opacity: 0.25), radius: 5, y: 5)
-                        
-                        
                     }
                 )
             )
@@ -163,6 +161,56 @@ struct CardView: View {
             }
         }
         return "NoImage"
+    }
+    
+    private func getColorForBank(bankName : String) -> LinearGradient{
+        if(bankName == "Standard Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.65), Color.init(.displayP3, red: 0, green: 0.25, blue: 0.8, opacity: 1)]), startPoint: .top, endPoint: .bottom)
+        }
+        else if(bankName == "Absa Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.75), Color.init(.displayP3, red: 0.55, green: 0, blue: 0.37, opacity: 1)]), startPoint: .top, endPoint: .bottom)
+        }
+        else if(bankName == "African Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.75), Color.init(.displayP3, red: 0, green: 0.3, blue: 0, opacity: 1), Color.init(.displayP3, red: 0, green: 0, blue: 0, opacity: 1)]), startPoint: .top, endPoint: .bottom)
+        }
+        else if(bankName == "Bidvest Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.init(.displayP3, red: 0, green: 0, blue: 0.52, opacity: 1)]), startPoint: .top, endPoint: .bottomLeading)
+        }
+        else if(bankName == "Capitec Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0.6), Color.gray]), startPoint: .top, endPoint: .bottom)
+        }
+        else if(bankName == "Discovery"){
+            return LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.5), Color.black]), startPoint: .top, endPoint: .bottomTrailing)
+        }
+        else{
+            return LinearGradient(gradient: /*@START_MENU_TOKEN@*/Gradient(colors: [Color.red, Color.blue])/*@END_MENU_TOKEN@*/, startPoint: .leading, endPoint: .trailing)
+        }
+    }
+    
+    
+    private func getColorForLowerCard(bankName : String) -> LinearGradient{
+        if(bankName == "Standard Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.3), Color.init(.displayP3, red: 0, green: 0, blue: 1, opacity: 0.5)]), startPoint: .top, endPoint: .bottom)
+        }
+        else if(bankName == "Absa Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.75), Color.red]), startPoint: .top, endPoint: .bottom)
+        }
+        else if(bankName == "African Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.75), Color.init(.displayP3, red: 0, green: 0.3, blue: 0, opacity: 1), Color.black]), startPoint: .top, endPoint: .bottom)
+        }
+        else if(bankName == "Bidvest Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(1), Color.blue.opacity(0.3)]), startPoint: .top, endPoint: .bottomLeading)
+        }
+        else if(bankName == "Capitec Bank"){
+            return LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.gray.opacity(0.5)]), startPoint: .top, endPoint: .bottom)
+        }
+        else if(bankName == "Discovery"){
+            return LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.5), Color.black]), startPoint: .top, endPoint: .bottomTrailing)
+        }
+        else{
+            return LinearGradient(gradient: /*@START_MENU_TOKEN@*/Gradient(colors: [Color.red, Color.blue])/*@END_MENU_TOKEN@*/, startPoint: .leading, endPoint: .trailing)
+            //Add more banks later!
+        }
     }
 }
 
