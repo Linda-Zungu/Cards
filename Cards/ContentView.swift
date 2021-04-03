@@ -7,9 +7,12 @@
 
 import SwiftUI
 import CoreData
+import LocalAuthentication
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
+    @State private var isUnlocked = false
+    
     @State var isModal = false
     @State var cardNumber = ""
     @State var cardHolder = ""
@@ -44,83 +47,99 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView{
-            List{
-                ForEach(cards){ card in
-                    NavigationLink(destination: CardInfoView(cardNumber: card.cardNumber ?? "Card Number", cardHolder: card.cardHolder ?? "unknown", cvvNumber: card.cvvNumber ?? "---", selectedBank: card.name ?? "Unknown", expiryDate: card.expiryDate ?? "mm/yy", isNotTapped: isNotTapped)){
-                        CardRowView(cardName: card.name ?? "Unknown", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy", cardType: card.cardType ?? "")
+            if(self.isUnlocked){
+                List{
+                    ForEach(cards){ card in
+                        NavigationLink(destination: CardInfoView(cardNumber: card.cardNumber ?? "Card Number", cardHolder: card.cardHolder ?? "unknown", cvvNumber: card.cvvNumber ?? "---", selectedBank: card.name ?? "Unknown", expiryDate: card.expiryDate ?? "mm/yy", isNotTapped: isNotTapped)){
+                            CardRowView(cardName: card.name ?? "Unknown", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy", cardType: card.cardType ?? "")
+                        }
                     }
+                    .onDelete(perform: deleteItems)
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .listStyle(InsetGroupedListStyle())
-            
-        
-            .navigationBarItems(trailing:                     
-            Button(action: {
-                isModal = true
-            }, label: {
-                Text("Add Card")
-                    .font(.body)
-                    .sheet(isPresented: $isModal, onDismiss: {isNotTapped = true}){
-                        NavigationView{
-                            ZStack{
-                                ScrollView{
+                .listStyle(InsetGroupedListStyle())
+                
+                .navigationBarItems(trailing:
+                Button(action: {
+                    isModal = true
+                }, label: {
+                    Text("Add Card")
+                        .font(.body)
+                        .sheet(isPresented: $isModal, onDismiss: {isNotTapped = true}){
+                            NavigationView{
+                                ZStack{
+                                    ScrollView{
+                                        VStack{
+                                            CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped)
+                                                .padding(.top, 290)
+
+                                            Spacer()
+                                        }
+                                    }
                                     VStack{
-                                        CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped)
-                                            .padding(.top, 290)
-                                        
+                                        CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
+
                                         Spacer()
                                     }
                                 }
-                                VStack{
-                                    CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
-                                    
-                                    Spacer()
-                                }
-                            }
-                            
-                            .navigationBarItems(leading:
-                                Button(action: {
-                                    isModal = false
-                                    isTapped = true
-                                    isNotTapped = true
-                                    
-                                    cardNumber = ""
-                                    cardHolder = ""
-                                    cvvNumber = ""
-                                    expiryDate = ""
-                                    selectedBank = banks[0]
-                                }, label: {
-                                    Text("Cancel")
-                                }), trailing:
-                                    Button(action: {
-                                        if(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" &&
-                                            cvvNumber != "" && expiryDate != ""){
-                                            addCard()
-                                            isModal = false
-                                            isTapped = true
-                                            isNotTapped = true
 
-                                            cardNumber = ""
-                                            cardHolder = ""
-                                            cvvNumber = ""
-                                            expiryDate = ""
-                                            selectedBank = banks[0]
-                                        }
+                                .navigationBarItems(leading:
+                                    Button(action: {
+                                        isModal = false
+                                        isTapped = true
+                                        isNotTapped = true
+
+                                        cardNumber = ""
+                                        cardHolder = ""
+                                        cvvNumber = ""
+                                        expiryDate = ""
+                                        selectedBank = banks[0]
                                     }, label: {
-                                        Text("+ Save")
-                                            .foregroundColor(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
-                                    })
-                                    .disabled(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
-                            )
-                            .navigationTitle("Add Card")
-                            .navigationBarTitleDisplayMode(.inline)
+                                        Text("Cancel")
+                                    }), trailing:
+                                        Button(action: {
+                                            if(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" &&
+                                                cvvNumber != "" && expiryDate != ""){
+                                                addCard()
+                                                isModal = false
+                                                isTapped = true
+                                                isNotTapped = true
+
+                                                cardNumber = ""
+                                                cardHolder = ""
+                                                cvvNumber = ""
+                                                expiryDate = ""
+                                                selectedBank = banks[0]
+                                            }
+                                        }, label: {
+                                            Text("+ Save")
+                                                .foregroundColor(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
+                                        })
+                                        .disabled(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
+                                )
+                                .navigationTitle("Add Card")
+                                .navigationBarTitleDisplayMode(.inline)
+                            }
                         }
+                        .font(.none)
                     }
-                    .font(.none)
+                ))
+                .navigationTitle("Cards")
+            }
+            else{
+                VStack{
+                    Text("Nah bro, get out of here!")
+                    Button(action: {
+                            authenticate()
+                        
+                    }, label: {
+                        Text("Try again")
+                    })
                 }
-            ))
-            .navigationTitle("Cards")
+                
+            }
+        }
+        .onAppear{
+            authenticate()
         }
         
     }
@@ -179,6 +198,32 @@ struct ContentView: View {
     private func checkTextField(number : String) -> Bool{
         let num = Array(number)
         return ((num.count == 13 || num.count == 16) && num[0] == "4") || (num.count == 16 && num[0] == "5")
+    }
+    
+    func authenticate() {
+        let context = LAContext()
+        var error: NSError?
+
+        // check whether biometric authentication is possible
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            // it's possible, so go ahead and use it
+            let reason = "We need to unlock your data."
+
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
+                // authentication has now completed
+                DispatchQueue.main.async {
+                    if success {
+                        // authenticated successfully
+                        self.isUnlocked = true
+                    } else {
+                        // there was a problem
+                    }
+                }
+            }
+        } else {
+            // no biometrics allowed: Fix this!
+            print("Nothing!")
+        }
     }
 }
 
