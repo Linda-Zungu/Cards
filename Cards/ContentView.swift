@@ -135,7 +135,6 @@ struct ContentView: View {
                         Text("Try again")
                     })
                 }
-                
             }
         }
         .onAppear{
@@ -205,11 +204,27 @@ struct ContentView: View {
         var error: NSError?
 
         // check whether biometric authentication is possible
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
             // it's possible, so go ahead and use it
-            let reason = "We need to unlock your data."
+            let reason = "Biometric needed to authenticate and let you have access to your data."
 
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, authenticationError in
+                // authentication has now completed
+                DispatchQueue.main.async {
+                    if success {
+                        // authenticated successfully
+                        self.isUnlocked = true
+                    } else {
+                        // there was a problem
+                        print("Biometric failed")
+                        
+                    }
+                }
+            }
+        } else {
+            // no biometrics allowed: Fix this!
+            print("No biometrics allowed")
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "") { success, authenticationError in
                 // authentication has now completed
                 DispatchQueue.main.async {
                     if success {
@@ -220,9 +235,6 @@ struct ContentView: View {
                     }
                 }
             }
-        } else {
-            // no biometrics allowed: Fix this!
-            print("Nothing!")
         }
     }
 }
