@@ -130,7 +130,11 @@ struct ContentView: View {
                     Text("CARDS")
                         .tracking(10)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .padding(.bottom, 90)
+                        .padding(.bottom, 40)
+                    
+                    Image(systemName: "lock.fill")
+                        .padding(.bottom, 50)
+                        .font(.system(size: 30))
                     
                     LockScreenCardsView()
                     
@@ -139,8 +143,9 @@ struct ContentView: View {
                     Button(action: {
                         authenticate()
                     }, label: {
-                        Text("Try Again...")
+                        Text("Use FaceID")
                     })
+                    .padding(30)
                 }
             }
         }

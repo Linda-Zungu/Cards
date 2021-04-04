@@ -10,6 +10,7 @@ import SwiftUI
 struct LockScreenCardsView: View {
     @State private var wave = false
     @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         BlurView(style: .systemUltraThinMaterial)
             .cornerRadius(15)
@@ -38,7 +39,8 @@ struct LockScreenCardsView: View {
                         self.wave.toggle()
                     }
             )
-            .shadow(/*color: Color.gray.opacity(0.4), */radius: 16, y: 17)
+//            .shadow(/*color: Color.gray.opacity(0.4), */radius: 16, y: 17)
+            .shadow(color: colorScheme == .light ? Color.gray.opacity(0.2) : Color.black, radius: 20, y: 20)
             .foregroundColor(.red)
     }
 }
