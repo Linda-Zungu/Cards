@@ -127,12 +127,19 @@ struct ContentView: View {
             }
             else{
                 VStack{
-                    Text("Nah bro, get out of here!")
+                    Text("CARDS")
+                        .tracking(10)
+                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .padding(.bottom, 90)
+                    
+                    LockScreenCardsView()
+                    
+                    Spacer()
+                    
                     Button(action: {
-                            authenticate()
-                        
+                        authenticate()
                     }, label: {
-                        Text("Try again")
+                        Text("Try Again...")
                     })
                 }
             }
