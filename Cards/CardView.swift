@@ -58,7 +58,7 @@ struct CardView: View {
                                 .font(.title2)
                                 .bold()
                                 .padding()
-                                .opacity(isNotTapped ? 1 : 0.35)
+                                .opacity(isNotTapped ? 0.7 : 0.35)
                             Spacer()
                             Image("\(getCardType(number: cardNumber))")
                                 .resizable()

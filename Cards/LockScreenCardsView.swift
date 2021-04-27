@@ -16,13 +16,12 @@ struct LockScreenCardsView: View {
             .cornerRadius(15)
             .overlay(
                 ZStack{
-                    RoundedRectangle(cornerRadius: 15)
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
                         .stroke(colorScheme == .light ? Color.white.opacity(0.75) : Color.init(UIColor.secondarySystemFill), lineWidth: 1)
-                    
                     Text("Authenticate")
                         .tracking(2)
-                        .shadow(radius: 1, y: 1)
                         .foregroundColor(.white)
+                        .opacity(0.5)
                 }
                 
                 
@@ -39,7 +38,6 @@ struct LockScreenCardsView: View {
                         self.wave.toggle()
                     }
             )
-//            .shadow(/*color: Color.gray.opacity(0.4), */radius: 16, y: 17)
             .shadow(color: colorScheme == .light ? Color.gray.opacity(0.2) : Color.black, radius: 20, y: 20)
             .foregroundColor(.red)
     }
