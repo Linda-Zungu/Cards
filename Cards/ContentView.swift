@@ -143,7 +143,18 @@ struct ContentView: View {
                     Button(action: {
                         authenticate()
                     }, label: {
-                        Text("Use FaceID")
+                        VStack{
+                            Text("Use Biometric")
+                                .foregroundColor(.primary)
+                                .font(.subheadline)
+                                .kerning(2)
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 15, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+                                        .frame(width: 200, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                        .foregroundColor(Color.primary.opacity(0.3))
+                                )
+                        }
                     })
                     .padding(30)
                 }
@@ -218,7 +229,7 @@ struct ContentView: View {
         // check whether biometric authentication is possible
         if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
             // it's possible, so go ahead and use it
-            let reason = "Biometric needed to authenticate and let you have access to your data."
+            let reason = "Passcode required to gain access to your data."
 
             context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, authenticationError in
                 // authentication has now completed
