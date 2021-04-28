@@ -23,6 +23,9 @@ struct MapView: UIViewRepresentable {
         
         let status = CLLocationManager()
         
+        uiView.layoutMargins.bottom = -200
+        uiView.layoutMargins.top = -200
+        
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         
