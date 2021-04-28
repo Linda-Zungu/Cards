@@ -13,7 +13,7 @@ struct LockScreenCardsView: View {
     
     var body: some View {
         BlurView(style: .systemUltraThinMaterial)
-            .cornerRadius(15)
+            .cornerRadius(15, antialiased: true)
             .overlay(
                 ZStack{
                     RoundedRectangle(cornerRadius: 15, style: .continuous)
