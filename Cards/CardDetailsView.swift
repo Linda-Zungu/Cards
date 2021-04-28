@@ -56,11 +56,23 @@ struct CardDetailsView: View {
                                     self.cardNumber.removeLast()
                                 }
                             }
+                            .background(
+                                Rectangle()
+                                    .stroke(lineWidth: 0.1)
+                                    .frame(width: UIScreen.main.bounds.width-70, height: 1, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                    .padding(.top, 40)
+                            )
                         Spacer()
                         VerifiedView(cardNumber: cardNumber)
                     }                    
                         
                     DoneTextField(placeholder: "Card Holder Name", text: $cardHolder, keyBoardType: .default)
+                        .background(
+                            Rectangle()
+                                .stroke(lineWidth: 0.1)
+                                .frame(width: UIScreen.main.bounds.width-40, height: 1, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                .padding(.top, 40)
+                        )
                 }
                 .simultaneousGesture(TapGesture().onEnded{
                     isNotTapped = true
@@ -78,10 +90,17 @@ struct CardDetailsView: View {
                                 self.cvvNumber.removeLast()
                             }
                         }
+                        .background(
+                            Rectangle()
+                                .stroke(lineWidth: 0.1)
+                                .frame(width: UIScreen.main.bounds.width-80, height: 1, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                .padding(.top, 40)
+                        )
                         
                     Spacer()
-                    Image(systemName: "creditcard")
+                    Image(systemName: "ellipsis")
                         .font(.system(size: 25))
+                        .foregroundColor(.gray)
                 }
                 
                 DoneTextField(placeholder: "Expiry Date", text: $expiryDate, keyBoardType: .default)
@@ -94,13 +113,16 @@ struct CardDetailsView: View {
                             self.expiryDate.removeLast()
                         }
                     }
+                    .background(
+                        Rectangle()
+                            .stroke(lineWidth: 0.1)
+                            .frame(width: UIScreen.main.bounds.width-40, height: 1, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .padding(.top, 40)
+                    )
             }
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
             .foregroundColor(.primary)
-            
-            Divider()
-                .padding(.horizontal)
             
             Text("Pick Your Bank")
                 .font(.headline)
