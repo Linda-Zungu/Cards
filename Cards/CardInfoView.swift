@@ -36,8 +36,7 @@ struct CardInfoView: View {
                 Spacer()
             }
             VStack{
-                Spacer(minLength: isMapTapped ? 10 : 0)
-                
+                Spacer(minLength: isMapTapped ? CGFloat(10) : 0)
                 MapView(nameOfBank: selectedBank)
                     .frame(width: UIScreen.main.bounds.width-(isMapTapped ? 40 : 0), height: isMapTapped ? 450 : UIScreen.main.bounds.height+50)
                     .cornerRadius(isMapTapped ? 15 : 0)
@@ -52,15 +51,19 @@ struct CardInfoView: View {
                                                 .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                                             .cornerRadius(10)
                                             .overlay(
-                                                Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")
-                                                    .font(.system(size: 27))
-                                                    .foregroundColor(.primary)
+                                                RoundedRectangle(cornerRadius: 10, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/).stroke(lineWidth: 0.5)
+                                                    .foregroundColor(.init(.displayP3, white: colorScheme == .light ? 1 : 0.5, opacity: 0.8))
+                                                    .overlay(
+                                                        Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")
+                                                            .font(.system(size: 27))
+                                                            .foregroundColor(.primary)
+                                                    )
+
                                             )
                                             .shadow(color: .init(.displayP3, white: 0, opacity: 0.2),radius: 10)
                                             .padding(isMapTapped ? 8 : 0)
-                                            .padding(.top, isMapTapped ? 0 : 100)
-                                            .padding(.leading, isMapTapped ? 0 : 8)
-                                    
+                                            .padding(.top, isMapTapped ? CGFloat(0) : 100)
+                                            .padding(.leading, isMapTapped ? CGFloat(0) : 8)
                                     })
                                 Spacer()
                             }
@@ -73,6 +76,7 @@ struct CardInfoView: View {
         }
         .navigationBarTitle("\(selectedBank)")
         .navigationBarTitleDisplayMode(.inline)
+//        .navigationBarHidden(isMapTapped ? false : true)
     }
 }
 
