@@ -24,7 +24,7 @@ struct DoneTextField: UIViewRepresentable {
         textfield.keyboardType = keyBoardType
         textfield.delegate = context.coordinator
         textfield.placeholder = placeholder
-        textfield.borderStyle = .roundedRect
+//        textfield.borderStyle = .roundedRect
         
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: textfield.frame.size.width, height: 44))
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(textfield.doneButtonTapped(button:)))
