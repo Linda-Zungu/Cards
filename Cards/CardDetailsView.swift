@@ -32,6 +32,9 @@ struct CardDetailsView: View {
     @Binding var selectedBank : String
     @Binding var isNotTapped : Bool
     @Binding var isTapped : Bool
+    @Binding var isCvvGuideShown : Bool
+    
+//    @State var isGuideShown = false
     
     var body: some View {
         VStack{
@@ -64,7 +67,7 @@ struct CardDetailsView: View {
                             )
                         Spacer()
                         VerifiedView(cardNumber: cardNumber)
-                    }                    
+                    }
                         
                     DoneTextField(placeholder: "Card Holder Name", text: $cardHolder, keyBoardType: .default)
                         .background(
@@ -98,9 +101,13 @@ struct CardDetailsView: View {
                         )
                         
                     Spacer()
-                    Image(systemName: "ellipsis")
-                        .font(.system(size: 25))
-                        .foregroundColor(.gray)
+                    Button(action: {
+                        isCvvGuideShown.toggle()
+                    }, label: {
+                        Image(systemName: "ellipsis")
+                            .font(.system(size: 25))
+                    })
+                    
                 }
                 
                 DoneTextField(placeholder: "Expiry Date", text: $expiryDate, keyBoardType: .default)
@@ -141,6 +148,6 @@ struct CardDetailsView: View {
 
 struct CardDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CardDetailsView(cardNumber: Binding.constant(""), cardHolder: Binding.constant(""), cvvNumber: Binding.constant(""), expiryDate: Binding.constant(""), selectedBank: Binding.constant(""), isNotTapped: Binding.constant(true), isTapped: Binding.constant(true))
+        CardDetailsView(cardNumber: Binding.constant(""), cardHolder: Binding.constant(""), cvvNumber: Binding.constant(""), expiryDate: Binding.constant(""), selectedBank: Binding.constant(""), isNotTapped: Binding.constant(true), isTapped: Binding.constant(true), isCvvGuideShown: Binding.constant(true))
     }
 }
