@@ -19,12 +19,12 @@ struct ContentView: View {
     @State var cvvNumber = ""
     @State var expiryDate = ""
     
-    var banks = ["Choose Bank",
-                 "Absa Bank",
+    var banks = ["Absa Bank",
                  "African Bank",
                  "Bidvest Bank",
                  "Capitec Bank",
                  "Discovery",
+                 "Choose Bank",
                  "First National Bank",
                  "FirstRand Bank",
                  "Investec Bank ",
@@ -36,6 +36,7 @@ struct ContentView: View {
     
     @State var isNotTapped = true
     @State var isTapped = true
+    @State var isCvvGuideShown = false
     
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -47,7 +48,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView{
-            if(self.isUnlocked){
+//            if(self.isUnlocked){
                 List{
                     ForEach(cards){ card in
                         NavigationLink(destination: CardInfoView(cardNumber: card.cardNumber ?? "Card Number", cardHolder: card.cardHolder ?? "unknown", cvvNumber: card.cvvNumber ?? "---", selectedBank: card.name ?? "Unknown", expiryDate: card.expiryDate ?? "mm/yy", isNotTapped: isNotTapped)){
@@ -58,18 +59,23 @@ struct ContentView: View {
                 }
                 .listStyle(InsetGroupedListStyle())
                 
-                .navigationBarItems(trailing:
+                .navigationBarItems(leading:
+                    NavigationLink(destination: SettingsView()){
+                        Image(systemName: "gear")
+                            .font(.system(size: 23))
+                    },
+                    trailing:
                 Button(action: {
                     isModal = true
                 }, label: {
-                    Text("Add Card")
-                        .font(.body)
+                    Image(systemName: "plus")
+                        .font(.system(size: 23))
                         .sheet(isPresented: $isModal, onDismiss: {isNotTapped = true}){
                             NavigationView{
                                 ZStack{
                                     ScrollView{
                                         VStack{
-                                            CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped)
+                                            CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped, isCvvGuideShown: $isCvvGuideShown)
                                                 .padding(.top, 290)
 
                                             Spacer()
@@ -80,6 +86,11 @@ struct ContentView: View {
 
                                         Spacer()
                                     }
+                                    
+                                    VStack{
+                                        Spacer()
+                                        GuidanceModalSheet
+                                    }
                                 }
 
                                 .navigationBarItems(leading:
@@ -87,34 +98,36 @@ struct ContentView: View {
                                         isModal = false
                                         isTapped = true
                                         isNotTapped = true
+                                        isCvvGuideShown = false
 
                                         cardNumber = ""
                                         cardHolder = ""
                                         cvvNumber = ""
                                         expiryDate = ""
-                                        selectedBank = banks[0]
+                                        selectedBank = banks[5]
                                     }, label: {
                                         Text("Cancel")
                                     }), trailing:
                                         Button(action: {
-                                            if(selectedBank != banks[0] && cardNumber != "" && cardHolder != "" &&
+                                            if(selectedBank != banks[5] && cardNumber != "" && cardHolder != "" &&
                                                 cvvNumber != "" && expiryDate != ""){
                                                 addCard()
                                                 isModal = false
                                                 isTapped = true
                                                 isNotTapped = true
+                                                isCvvGuideShown = false
 
                                                 cardNumber = ""
                                                 cardHolder = ""
                                                 cvvNumber = ""
                                                 expiryDate = ""
-                                                selectedBank = banks[0]
+                                                selectedBank = banks[5]
                                             }
                                         }, label: {
                                             Text("+ Save")
-                                                .foregroundColor(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
+                                                .foregroundColor(selectedBank != banks[5] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
                                         })
-                                        .disabled(selectedBank != banks[0] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
+                                        .disabled(selectedBank != banks[5] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
                                 )
                                 .navigationTitle("Add Card")
                                 .navigationBarTitleDisplayMode(.inline)
@@ -125,45 +138,85 @@ struct ContentView: View {
                 ))
                 .navigationTitle("Cards")
             }
-            else{
-                VStack{
-                    Text("CARDS")
-                        .tracking(10)
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .padding(.bottom, 40)
-                    
-                    Image(systemName: "lock.fill")
-                        .padding(.bottom, 50)
-                        .font(.system(size: 30))
-                    
-                    LockScreenCardsView()
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        authenticate()
-                    }, label: {
-                        VStack{
-                            Text("Use Biometric")
-                                .foregroundColor(.primary)
-                                .font(.subheadline)
-                                .kerning(2)
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
-                                        .frame(width: 200, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                                        .foregroundColor(Color.primary.opacity(0.3))
-                                )
-                        }
-                    })
-                    .padding(30)
-                }
-            }
-        }
-        .onAppear{
-            authenticate()
-        }
+//            else{
+//                VStack{
+//                    Text("CARDS")
+//                        .tracking(10)
+//                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+//                        .padding(.bottom, 40)
+//
+//                    Image(systemName: "lock.fill")
+//                        .padding(.bottom, 50)
+//                        .font(.system(size: 30))
+//
+//                    LockScreenCardsView()
+//
+//                    Spacer()
+//
+//                    Button(action: {
+//                        authenticate()
+//                    }, label: {
+//                        VStack{
+//                            Text("Use Biometric")
+//                                .foregroundColor(.primary)
+//                                .font(.subheadline)
+//                                .kerning(2)
+//                                .padding()
+//                                .background(
+//                                    RoundedRectangle(cornerRadius: 15, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+//                                        .frame(width: 200, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+//                                        .foregroundColor(Color.primary.opacity(0.3))
+//                                )
+//                        }
+//                    })
+//                    .padding(30)
+//                }
+//            }
+//        }
+//        .onAppear{
+//            authenticate()
+//        }
         
+    }
+    var GuidanceModalSheet : some View{
+        BlurView(style: .systemUltraThinMaterial)
+            .mask(
+                RoundedRectangle(cornerRadius: 35, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 35, style: .continuous)
+                    .stroke(colorScheme == .light ? Color.white.opacity(0.8) : Color.init(UIColor.secondarySystemFill), lineWidth: 1)
+                    .foregroundColor(.white)
+                    .overlay(
+                        Button(action: {
+                            isCvvGuideShown.toggle()
+                        }, label: {
+                            VStack{
+                                HStack{
+                                    Spacer()
+                                    Image(systemName: "multiply")
+                                        .foregroundColor(Color.init(.displayP3, white: colorScheme == .light ? 0.8 : 1, opacity: 0.5))
+                                        .background(
+                                            BlurView(style: .systemChromeMaterial)
+                                                .frame(width: 30, height: 30)
+                                                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                                        )
+                                }
+                                .padding(25)
+                                
+                                Spacer()
+                            }
+                        })
+                        
+                    )
+            )
+            .shadow(radius: 90, y: 67)
+            .padding(17)
+            .ignoresSafeArea()
+            .frame(width: UIScreen.main.bounds.width, height: 350, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            .offset(x: 0, y: isCvvGuideShown ? 0 : 380)
+            .animation(Animation.spring())
+            
     }
     
     private func addCard(){
