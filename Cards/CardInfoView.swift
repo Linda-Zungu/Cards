@@ -51,8 +51,8 @@ struct CardInfoView: View {
                                                 .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                                             .cornerRadius(10)
                                             .overlay(
-                                                RoundedRectangle(cornerRadius: 10, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/).stroke(lineWidth: 0.5)
-                                                    .foregroundColor(.init(.displayP3, white: colorScheme == .light ? 1 : 0.5, opacity: 0.8))
+                                                RoundedRectangle(cornerRadius: 10, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+                                                    .stroke(colorScheme == .light ? Color.white.opacity(0.8) : Color.init(UIColor.secondarySystemFill), lineWidth: 0.5)
                                                     .overlay(
                                                         Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")
                                                             .font(.system(size: 27))
