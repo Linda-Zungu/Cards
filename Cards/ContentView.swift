@@ -86,7 +86,25 @@ struct ContentView: View {
                                         }
                                     }
                                     VStack{
+                                        Group{
+                                            colorScheme == .light ? LinearGradient(gradient: Gradient(colors: [Color.white, Color.init(.displayP3, white: 1, opacity: 1), Color.init(.displayP3, white: 1, opacity: 0)]), startPoint: .top, endPoint: .bottom) :
+                                                LinearGradient(gradient: Gradient(colors: [Color.init(.displayP3, white: 0, opacity: 2), Color.init(.displayP3, white: 0, opacity: 0.7), Color.clear]), startPoint: .top, endPoint: .bottom)
+                                        }
+                                        .frame(width: UIScreen.main.bounds.width, height: 250, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                        Spacer()
+                                    }
+                                    VStack{
                                         CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
+                                            .offset(x: viewState.width, y: viewState.height)
+                                            .gesture(
+                                                DragGesture()
+                                                    .onChanged { value in
+                                                        viewState = value.translation
+                                                    }
+                                                    .onEnded { value in
+                                                        viewState = .zero
+                                                    }
+                                            )
 
                                         Spacer()
                                     }
