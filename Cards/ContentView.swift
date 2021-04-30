@@ -71,7 +71,10 @@ struct ContentView: View {
                 }, label: {
                     Image(systemName: "plus")
                         .font(.system(size: 23))
-                        .sheet(isPresented: $isModal, onDismiss: {isNotTapped = true}){
+                        .sheet(isPresented: $isModal, onDismiss: {
+                            isNotTapped = true
+                            isCvvGuideShown = false
+                        }){
                             NavigationView{
                                 ZStack{
                                     ScrollView{
