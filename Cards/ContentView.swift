@@ -37,6 +37,7 @@ struct ContentView: View {
     @State var isNotTapped = true
     @State var isTapped = true
     @State var isCvvGuideShown = false
+    @State var viewState = CGSize.zero
     
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -187,34 +188,24 @@ struct ContentView: View {
                 RoundedRectangle(cornerRadius: 35, style: .continuous)
                     .stroke(colorScheme == .light ? Color.white.opacity(0.8) : Color.init(UIColor.secondarySystemFill), lineWidth: 1)
                     .foregroundColor(.white)
-                    .overlay(
-                        Button(action: {
-                            isCvvGuideShown.toggle()
-                        }, label: {
-                            VStack{
-                                HStack{
-                                    Spacer()
-                                    Image(systemName: "multiply")
-                                        .foregroundColor(Color.init(.displayP3, white: colorScheme == .light ? 0.8 : 1, opacity: 0.5))
-                                        .background(
-                                            BlurView(style: .systemChromeMaterial)
-                                                .frame(width: 30, height: 30)
-                                                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                                        )
-                                }
-                                .padding(25)
-                                
-                                Spacer()
-                            }
-                        })
-                        
-                    )
             )
             .shadow(radius: 90, y: 67)
             .padding(17)
             .ignoresSafeArea()
             .frame(width: UIScreen.main.bounds.width, height: 350, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-            .offset(x: 0, y: isCvvGuideShown ? 0 : 380)
+            .offset(x: 0, y: isCvvGuideShown ? viewState.height*1.5 : 380)
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        viewState = value.translation
+                    }
+                    .onEnded { value in
+                        if (self.viewState.height) > 100{
+                            isCvvGuideShown.toggle()
+                        }
+                        viewState = .zero
+                    }
+            )
             .animation(Animation.spring())
             
     }
