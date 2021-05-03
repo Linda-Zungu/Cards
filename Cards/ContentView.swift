@@ -95,16 +95,6 @@ struct ContentView: View {
                                     }
                                     VStack{
                                         CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
-                                            .offset(x: viewState.width, y: viewState.height)
-                                            .gesture(
-                                                DragGesture()
-                                                    .onChanged { value in
-                                                        viewState = value.translation
-                                                    }
-                                                    .onEnded { value in
-                                                        viewState = .zero
-                                                    }
-                                            )
 
                                         Spacer()
                                     }
@@ -214,7 +204,7 @@ struct ContentView: View {
             .padding(17)
             .ignoresSafeArea()
             .frame(width: UIScreen.main.bounds.width, height: 350, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-            .offset(x: 0, y: isCvvGuideShown ? viewState.height*1.5 : 380)
+            .offset(x: 0, y: isCvvGuideShown ? viewState.height : 380)
             .gesture(
                 DragGesture()
                     .onChanged { value in
@@ -227,7 +217,7 @@ struct ContentView: View {
                         viewState = .zero
                     }
             )
-            .animation(Animation.spring())
+            .animation(Animation.spring().speed(1.2))
             
     }
     
