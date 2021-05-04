@@ -193,15 +193,15 @@ struct ContentView: View {
     var GuidanceModalSheet : some View{
         BlurView(style: .systemUltraThinMaterial)
             .mask(
-                RoundedRectangle(cornerRadius: 35, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+                RoundedRectangle(cornerRadius: 44, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 35, style: .continuous)
+                RoundedRectangle(cornerRadius: 44, style: .continuous)
                     .stroke(colorScheme == .light ? Color.white.opacity(0.8) : Color.init(UIColor.secondarySystemFill), lineWidth: 1)
                     .foregroundColor(.white)
             )
             .shadow(radius: 90, y: 67)
-            .padding(17)
+            .padding(5)
             .ignoresSafeArea()
             .frame(width: UIScreen.main.bounds.width, height: 350, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             .offset(x: 0, y: isCvvGuideShown ? viewState.height : 380)
