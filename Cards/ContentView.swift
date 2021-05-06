@@ -226,19 +226,26 @@ struct ContentView: View {
                 .foregroundColor(.white)
             
             VStack{
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .frame(width: 150, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: .center)
-                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, y: 10)
-                    .overlay(
-                        guidanceCvvCardStrip
-                    )
-                    .foregroundColor(.gray)
-
-                    .padding()
+                Group{
+                    Text("Quick Tip")
+                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .bold()
+                        .foregroundColor(.primary)
                     
-                Spacer()
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .frame(width: 150, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: .center)
+                        .shadow(radius: 10, y: 10)
+                        .overlay(
+                            guidanceCvvCardStrip
+                        )
+                        .foregroundColor(Color.init(.quaternaryLabel))
+                        
+                    Text("You can find the CVV number on the back of the bank card, on the left of the bank card strip.")
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.primary)
+                }
+                .padding()
             }
-            
         }
     }
     
@@ -255,6 +262,9 @@ struct ContentView: View {
                     .offset(x: 40, y: 10)
                     .overlay(
                         Text("000")
+                            .font(.caption)
+                            .bold()
+                            .foregroundColor(.black)
                             .offset(x: 40, y: 10)
                     )
             )
