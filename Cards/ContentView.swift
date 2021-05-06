@@ -196,9 +196,7 @@ struct ContentView: View {
                 RoundedRectangle(cornerRadius: 44, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 44, style: .continuous)
-                    .stroke(colorScheme == .light ? Color.white.opacity(0.8) : Color.init(UIColor.secondarySystemFill), lineWidth: 1)
-                    .foregroundColor(.white)
+                cvvGuidanceCard
             )
             .shadow(radius: 90, y: 67)
             .padding(5)
@@ -219,6 +217,47 @@ struct ContentView: View {
             )
             .animation(Animation.spring().speed(1.2))
             
+    }
+    
+    var cvvGuidanceCard : some View {
+        ZStack{
+            RoundedRectangle(cornerRadius: 44, style: .continuous)
+                .stroke(colorScheme == .light ? Color.white.opacity(0.8) : Color.init(UIColor.secondarySystemFill), lineWidth: 1)
+                .foregroundColor(.white)
+            
+            VStack{
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .frame(width: 150, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: .center)
+                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, y: 10)
+                    .overlay(
+                        guidanceCvvCardStrip
+                    )
+                    .foregroundColor(.gray)
+
+                    .padding()
+                    
+                Spacer()
+            }
+            
+        }
+    }
+    
+    var guidanceCvvCardStrip : some View {
+        Rectangle()
+            .frame(width: 150, height: 20, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            .foregroundColor(Color.white.opacity(0.6))
+            .offset(x: 0, y: 10)
+            .overlay(
+                Rectangle()
+                    .stroke(lineWidth: /*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
+                    .frame(width: 40, height: 20, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                    .foregroundColor(.red)
+                    .offset(x: 40, y: 10)
+                    .overlay(
+                        Text("000")
+                            .offset(x: 40, y: 10)
+                    )
+            )
     }
     
     private func addCard(){
