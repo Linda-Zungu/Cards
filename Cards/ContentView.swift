@@ -201,8 +201,8 @@ struct ContentView: View {
             .shadow(radius: 90, y: 67)
             .padding(5)
             .ignoresSafeArea()
-            .frame(width: UIScreen.main.bounds.width, height: 350, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-            .offset(x: 0, y: isCvvGuideShown ? viewState.height : 380)
+            .frame(width: UIScreen.main.bounds.width, height: 370, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            .offset(x: 0, y: isCvvGuideShown ? viewState.height : 400)
             .gesture(
                 DragGesture()
                     .onChanged { value in
@@ -231,6 +231,7 @@ struct ContentView: View {
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         .bold()
                         .foregroundColor(.primary)
+                        .padding()
                     
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .frame(width: 150, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: .center)
@@ -245,6 +246,7 @@ struct ContentView: View {
                         .foregroundColor(.primary)
                 }
                 .padding()
+                Spacer()
             }
         }
     }
