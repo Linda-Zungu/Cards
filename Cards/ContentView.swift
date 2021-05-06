@@ -200,8 +200,6 @@ struct ContentView: View {
             )
             .shadow(radius: 90, y: 67)
             .padding(5)
-            .ignoresSafeArea()
-            .frame(width: UIScreen.main.bounds.width, height: 370, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             .offset(x: 0, y: isCvvGuideShown ? viewState.height : 400)
             .gesture(
                 DragGesture()
@@ -216,6 +214,8 @@ struct ContentView: View {
                     }
             )
             .animation(Animation.spring().speed(1.2))
+            .ignoresSafeArea()
+            .frame(width: UIScreen.main.bounds.width, height: 370, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             
     }
     
