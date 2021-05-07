@@ -213,7 +213,7 @@ struct ContentView: View {
                         viewState = .zero
                     }
             )
-            .animation(Animation.spring().speed(1.2))
+            .animation(Animation.spring().speed(1.5))
             .ignoresSafeArea()
             .frame(width: UIScreen.main.bounds.width, height: 370, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             
