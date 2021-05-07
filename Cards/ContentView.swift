@@ -196,7 +196,10 @@ struct ContentView: View {
                 RoundedRectangle(cornerRadius: 44, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
             )
             .overlay(
-                cvvGuidanceCard
+                ZStack{
+                    cvvGuidanceCard
+                    hideModalSheetButton
+                }
             )
             .shadow(radius: 90, y: 67)
             .padding(5)
@@ -270,6 +273,23 @@ struct ContentView: View {
                             .offset(x: 40, y: 10)
                     )
             )
+    }
+    
+    var hideModalSheetButton : some View {
+        Button(action: {
+            isCvvGuideShown.toggle()
+        }, label: {
+            Rectangle()
+                .mask(Circle())
+                .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .overlay(
+                    Image(systemName: "multiply")
+                        .font(.headline)
+                        .foregroundColor(Color.init(.tertiaryLabel))
+                )
+                .foregroundColor(Color.init(.tertiarySystemFill))
+        })
+        .offset(x: 150, y: -160)
     }
     
     private func addCard(){
