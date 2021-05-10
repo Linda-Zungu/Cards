@@ -39,155 +39,257 @@ struct ContentView: View {
     @State var isCvvGuideShown = false
     @State var viewState = CGSize.zero
     
+    @State var isViewList = UserSettings().changeContentView
     
     @Environment(\.managedObjectContext) private var viewContext
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Card.name, ascending: true)],
-        animation: .default)
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Card.name, ascending: UserSettings().sortByAscension)], animation: .default)
     private var cards: FetchedResults<Card>
 
     var body: some View {
         NavigationView{
-//            if(self.isUnlocked){
-                List{
-                    ForEach(cards){ card in
-                        NavigationLink(destination: CardInfoView(cardNumber: card.cardNumber ?? "Card Number", cardHolder: card.cardHolder ?? "unknown", cvvNumber: card.cvvNumber ?? "---", selectedBank: card.name ?? "Unknown", expiryDate: card.expiryDate ?? "mm/yy", isNotTapped: isNotTapped)){
-                            CardRowView(cardName: card.name ?? "Unknown", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy", cardType: card.cardType ?? "")
+            if(self.isUnlocked){
+                if(!isViewList){
+                    List{
+                        ForEach(cards){ card in
+                            NavigationLink(destination: CardInfoView(cardNumber: card.cardNumber ?? "Card Number", cardHolder: card.cardHolder ?? "unknown", cvvNumber: card.cvvNumber ?? "---", selectedBank: card.name ?? "Unknown", expiryDate: card.expiryDate ?? "mm/yy", isNotTapped: isNotTapped)){
+                                CardRowView(cardName: card.name ?? "Unknown", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy", cardType: card.cardType ?? "")
+                            }
                         }
+                        .onDelete(perform: deleteItems)
                     }
-                    .onDelete(perform: deleteItems)
-                }
-                .listStyle(InsetGroupedListStyle())
-                
-                .navigationBarItems(leading:
-                    NavigationLink(destination: SettingsView()){
-                        Image(systemName: "gear")
+                    .listStyle(InsetGroupedListStyle())
+                    
+                    .navigationBarItems(leading:
+                        NavigationLink(destination: SettingsView()){
+                            Image(systemName: "gear")
+                                .font(.system(size: 23))
+                        },
+                        trailing:
+                    Button(action: {
+                        isModal = true
+                    }, label: {
+                        Image(systemName: "plus")
                             .font(.system(size: 23))
-                    },
-                    trailing:
-                Button(action: {
-                    isModal = true
-                }, label: {
-                    Image(systemName: "plus")
-                        .font(.system(size: 23))
-                        .sheet(isPresented: $isModal, onDismiss: {
-                            isNotTapped = true
-                            isCvvGuideShown = false
-                        }){
-                            NavigationView{
-                                ZStack{
-                                    ScrollView{
+                            .sheet(isPresented: $isModal, onDismiss: {
+                                isNotTapped = true
+                                isCvvGuideShown = false
+                            }){
+                                NavigationView{
+                                    ZStack{
+                                        ScrollView{
+                                            VStack{
+                                                CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped, isCvvGuideShown: $isCvvGuideShown)
+                                                    .padding(.top, 290)
+
+                                                Spacer()
+                                            }
+                                        }
                                         VStack{
-                                            CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped, isCvvGuideShown: $isCvvGuideShown)
-                                                .padding(.top, 290)
+                                            Group{
+                                                colorScheme == .light ? LinearGradient(gradient: Gradient(colors: [Color.white, Color.init(.displayP3, white: 1, opacity: 1), Color.init(.displayP3, white: 1, opacity: 0)]), startPoint: .top, endPoint: .bottom) :
+                                                    LinearGradient(gradient: Gradient(colors: [Color.init(.displayP3, white: 0, opacity: 2), Color.init(.displayP3, white: 0, opacity: 0.7), Color.clear]), startPoint: .top, endPoint: .bottom)
+                                            }
+                                            .frame(width: UIScreen.main.bounds.width, height: 250, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                            Spacer()
+                                        }
+                                        VStack{
+                                            CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
 
                                             Spacer()
                                         }
-                                    }
-                                    VStack{
-                                        Group{
-                                            colorScheme == .light ? LinearGradient(gradient: Gradient(colors: [Color.white, Color.init(.displayP3, white: 1, opacity: 1), Color.init(.displayP3, white: 1, opacity: 0)]), startPoint: .top, endPoint: .bottom) :
-                                                LinearGradient(gradient: Gradient(colors: [Color.init(.displayP3, white: 0, opacity: 2), Color.init(.displayP3, white: 0, opacity: 0.7), Color.clear]), startPoint: .top, endPoint: .bottom)
+                                        
+                                        VStack{
+                                            Spacer()
+                                            GuidanceModalSheet
                                         }
-                                        .frame(width: UIScreen.main.bounds.width, height: 250, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                                        Spacer()
                                     }
-                                    VStack{
-                                        CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
 
-                                        Spacer()
-                                    }
-                                    
-                                    VStack{
-                                        Spacer()
-                                        GuidanceModalSheet
-                                    }
-                                }
-
-                                .navigationBarItems(leading:
-                                    Button(action: {
-                                        isModal = false
-                                        isTapped = true
-                                        isNotTapped = true
-                                        isCvvGuideShown = false
-
-                                        cardNumber = ""
-                                        cardHolder = ""
-                                        cvvNumber = ""
-                                        expiryDate = ""
-                                        selectedBank = banks[5]
-                                    }, label: {
-                                        Text("Cancel")
-                                    }), trailing:
+                                    .navigationBarItems(leading:
                                         Button(action: {
-                                            if(selectedBank != banks[5] && cardNumber != "" && cardHolder != "" &&
-                                                cvvNumber != "" && expiryDate != ""){
-                                                addCard()
-                                                isModal = false
-                                                isTapped = true
-                                                isNotTapped = true
-                                                isCvvGuideShown = false
+                                            isModal = false
+                                            isTapped = true
+                                            isNotTapped = true
+                                            isCvvGuideShown = false
 
-                                                cardNumber = ""
-                                                cardHolder = ""
-                                                cvvNumber = ""
-                                                expiryDate = ""
-                                                selectedBank = banks[5]
-                                            }
+                                            cardNumber = ""
+                                            cardHolder = ""
+                                            cvvNumber = ""
+                                            expiryDate = ""
+                                            selectedBank = banks[5]
                                         }, label: {
-                                            Text("+ Save")
-                                                .foregroundColor(selectedBank != banks[5] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
-                                        })
-                                        .disabled(selectedBank != banks[5] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
-                                )
-                                .navigationTitle("Add Card")
-                                .navigationBarTitleDisplayMode(.inline)
+                                            Text("Cancel")
+                                        }), trailing:
+                                            Button(action: {
+                                                if(selectedBank != banks[5] && cardNumber != "" && cardHolder != "" &&
+                                                    cvvNumber != "" && expiryDate != ""){
+                                                    addCard()
+                                                    isModal = false
+                                                    isTapped = true
+                                                    isNotTapped = true
+                                                    isCvvGuideShown = false
+
+                                                    cardNumber = ""
+                                                    cardHolder = ""
+                                                    cvvNumber = ""
+                                                    expiryDate = ""
+                                                    selectedBank = banks[5]
+                                                }
+                                            }, label: {
+                                                Text("+ Save")
+                                                    .foregroundColor(selectedBank != banks[5] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
+                                            })
+                                            .disabled(selectedBank != banks[5] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
+                                    )
+                                    .navigationTitle("Add Card")
+                                    .navigationBarTitleDisplayMode(.inline)
+                                }
+                            }
+                            .font(.none)
+                        }
+                    ))
+                    .navigationTitle("Cards")
+                }
+                else{
+                    ScrollView{
+                        ForEach(cards){ card in
+                            NavigationLink(destination: CardInfoView(cardNumber: card.cardNumber ?? "Card Number", cardHolder: card.cardHolder ?? "unknown", cvvNumber: card.cvvNumber ?? "---", selectedBank: card.name ?? "Unknown", expiryDate: card.expiryDate ?? "mm/yy", isNotTapped: isNotTapped)){
+                                CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: card.cvvNumber ?? "---", cardNumber: card.cardNumber ?? "Card Number", expiryDate: card.expiryDate ?? "mm/yy", selectedBank: card.name ?? "Unknown", cardHolder: card.cardHolder ?? "")
                             }
                         }
-                        .font(.none)
+                        .onDelete(perform: deleteItems)
                     }
-                ))
-                .navigationTitle("Cards")
+                    .listStyle(InsetGroupedListStyle())
+                    
+                    .navigationBarItems(leading:
+                        NavigationLink(destination: SettingsView()){
+                            Image(systemName: "gear")
+                                .font(.system(size: 23))
+                        },
+                        trailing:
+                    Button(action: {
+                        isModal = true
+                    }, label: {
+                        Image(systemName: "plus")
+                            .font(.system(size: 23))
+                            .sheet(isPresented: $isModal, onDismiss: {
+                                isNotTapped = true
+                                isCvvGuideShown = false
+                            }){
+                                NavigationView{
+                                    ZStack{
+                                        ScrollView{
+                                            VStack{
+                                                CardDetailsView(cardNumber: $cardNumber, cardHolder: $cardHolder, cvvNumber: $cvvNumber, expiryDate: $expiryDate, selectedBank: $selectedBank, isNotTapped: $isNotTapped, isTapped: $isTapped, isCvvGuideShown: $isCvvGuideShown)
+                                                    .padding(.top, 290)
+
+                                                Spacer()
+                                            }
+                                        }
+                                        VStack{
+                                            Group{
+                                                colorScheme == .light ? LinearGradient(gradient: Gradient(colors: [Color.white, Color.init(.displayP3, white: 1, opacity: 1), Color.init(.displayP3, white: 1, opacity: 0)]), startPoint: .top, endPoint: .bottom) :
+                                                    LinearGradient(gradient: Gradient(colors: [Color.init(.displayP3, white: 0, opacity: 2), Color.init(.displayP3, white: 0, opacity: 0.7), Color.clear]), startPoint: .top, endPoint: .bottom)
+                                            }
+                                            .frame(width: UIScreen.main.bounds.width, height: 250, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                            Spacer()
+                                        }
+                                        VStack{
+                                            CardView(isNotTapped: isNotTapped, isTapped: isTapped, cvvNumber: cvvNumber, cardNumber: cardNumber, expiryDate: expiryDate, selectedBank: selectedBank, cardHolder: cardHolder)
+
+                                            Spacer()
+                                        }
+                                        
+                                        VStack{
+                                            Spacer()
+                                            GuidanceModalSheet
+                                        }
+                                    }
+
+                                    .navigationBarItems(leading:
+                                        Button(action: {
+                                            isModal = false
+                                            isTapped = true
+                                            isNotTapped = true
+                                            isCvvGuideShown = false
+
+                                            cardNumber = ""
+                                            cardHolder = ""
+                                            cvvNumber = ""
+                                            expiryDate = ""
+                                            selectedBank = banks[5]
+                                        }, label: {
+                                            Text("Cancel")
+                                        }), trailing:
+                                            Button(action: {
+                                                if(selectedBank != banks[5] && cardNumber != "" && cardHolder != "" &&
+                                                    cvvNumber != "" && expiryDate != ""){
+                                                    addCard()
+                                                    isModal = false
+                                                    isTapped = true
+                                                    isNotTapped = true
+                                                    isCvvGuideShown = false
+
+                                                    cardNumber = ""
+                                                    cardHolder = ""
+                                                    cvvNumber = ""
+                                                    expiryDate = ""
+                                                    selectedBank = banks[5]
+                                                }
+                                            }, label: {
+                                                Text("+ Save")
+                                                    .foregroundColor(selectedBank != banks[5] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? .blue : .gray)
+                                            })
+                                            .disabled(selectedBank != banks[5] && (checkTextField(number: cardNumber))  && cardHolder != "" && cvvNumber.count == 3  && expiryDate != "" ? false : true)
+                                    )
+                                    .navigationTitle("Add Card")
+                                    .navigationBarTitleDisplayMode(.inline)
+                                }
+                            }
+                            .font(.none)
+                        }
+                    ))
+                    .navigationTitle("Cards")
+                }
             }
-//            else{
-//                VStack{
-//                    Text("CARDS")
-//                        .tracking(10)
-//                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-//                        .padding(.bottom, 40)
-//
-//                    Image(systemName: "lock.fill")
-//                        .padding(.bottom, 50)
-//                        .font(.system(size: 30))
-//
-//                    LockScreenCardsView()
-//
-//                    Spacer()
-//
-//                    Button(action: {
-//                        authenticate()
-//                    }, label: {
-//                        VStack{
-//                            Text("Use Biometric")
-//                                .foregroundColor(.primary)
-//                                .font(.subheadline)
-//                                .kerning(2)
-//                                .padding()
-//                                .background(
-//                                    RoundedRectangle(cornerRadius: 15, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
-//                                        .frame(width: 200, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-//                                        .foregroundColor(Color.primary.opacity(0.3))
-//                                )
-//                        }
-//                    })
-//                    .padding(30)
-//                }
-//            }
-//        }
-//        .onAppear{
-//            authenticate()
-//        }
+            else{
+                VStack{
+                    Text("CARDS")
+                        .tracking(10)
+                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .padding(.bottom, 40)
+
+                    Image(systemName: "lock.fill")
+                        .padding(.bottom, 50)
+                        .font(.system(size: 30))
+
+                    LockScreenCardsView()
+
+                    Spacer()
+
+                    Button(action: {
+                        authenticate()
+                    }, label: {
+                        VStack{
+                            Text("Use Biometric")
+                                .foregroundColor(.primary)
+                                .font(.subheadline)
+                                .kerning(2)
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 15, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+                                        .frame(width: 200, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                        .foregroundColor(Color.primary.opacity(0.3))
+                                )
+                        }
+                    })
+                    .padding(30)
+                }
+            }
+        }
+        .onAppear{
+            authenticate()
+        }
         
     }
     var GuidanceModalSheet : some View{
@@ -398,6 +500,6 @@ private let itemFormatter: DateFormatter = {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-//            .colorScheme(.dark)
+            .colorScheme(.dark)
     }
 }
