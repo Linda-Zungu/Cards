@@ -75,6 +75,9 @@ struct SettingsView: View {
                     })
                     .padding(30)
                 }
+                .onAppear{
+                    sharedSettings.authenticate()
+                }
             }
             
         }
