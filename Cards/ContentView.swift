@@ -11,8 +11,7 @@ import LocalAuthentication
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
-    @StateObject private var sharedSettings = SharedSettings()
-    @Environment(\.scenePhase) var scenePhase
+    @State private var isUnlocked = false
     
     @State var isModal = false
     @State var cardNumber = ""
@@ -49,7 +48,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView{
-            if(sharedSettings.isUnlocked){
+            if(isUnlocked){
                 if(!isViewList){
                     List{
                         ForEach(cards){ card in
@@ -109,7 +108,7 @@ struct ContentView: View {
                     Spacer()
 
                     Button(action: {
-                        sharedSettings.authenticate()
+                        authenticate()
                     }, label: {
                         VStack{
                             Text("Use Biometric")
@@ -128,16 +127,9 @@ struct ContentView: View {
                 }
             }
         }
-        .onChange(of: scenePhase, perform: { value in
-            if(value == .background){
-                sharedSettings.isUnlocked = false
-            }
-        })
-        .onAppear{
-            sharedSettings.authenticate()
+        .onAppear {
+            authenticate()
         }
-        .environmentObject(sharedSettings)
-        
     }
     var GuidanceModalSheet : some View{
         BlurView(style: .systemUltraThinMaterial)
@@ -165,9 +157,10 @@ struct ContentView: View {
                         viewState = .zero
                     }
             )
+            .opacity(isCvvGuideShown ? 1 : 0)
             .animation(Animation.spring().speed(1.5))
             .ignoresSafeArea()
-            .frame(width: UIScreen.main.bounds.width, height: 370, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            .frame(width: UIScreen.main.bounds.width, height: 340, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             
     }
     
@@ -323,7 +316,7 @@ struct ContentView: View {
                 )
                 .foregroundColor(Color.init(.tertiarySystemFill))
         })
-        .offset(x: 150, y: -160)
+        .offset(x: 155, y: -145)
     }
     
     private func addCard(){
@@ -373,6 +366,45 @@ struct ContentView: View {
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+    
+    func authenticate() {
+        let context = LAContext()
+        var error: NSError?
+
+        // check whether biometric authentication is possible
+        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+            // it's possible, so go ahead and use it
+            let reason = "Passcode required to gain access to your data."
+
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, authenticationError in
+                // authentication has now completed
+                DispatchQueue.main.async {
+                    if success {
+                        // authenticated successfully
+                        self.isUnlocked = true
+                    } else {
+                        // there was a problem
+                        print("Biometric failed")
+                        
+                    }
+                }
+            }
+        } else {
+            // no biometrics allowed: Fix this!
+            print("No biometrics allowed")
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "") { success, authenticationError in
+                // authentication has now completed
+                DispatchQueue.main.async {
+                    if success {
+                        // authenticated successfully
+                        self.isUnlocked = true
+                    } else {
+                        // there was a problem
+                    }
+                }
             }
         }
     }

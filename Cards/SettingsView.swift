@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.scenePhase) var scenePhase
-    @EnvironmentObject var sharedSettings : SharedSettings
+//    @Environment(\.scenePhase) var scenePhase
+//    @EnvironmentObject var sharedSettings : SharedSettings
     @ObservedObject var userSettings = UserSettings()
     
     var body: some View {
         VStack{
-            if(sharedSettings.isUnlocked){
+//            if(sharedSettings.isUnlocked){
                 Form{
                     Section(header: Text("Toggles")){
                         Toggle.init(isOn: $userSettings.sortByAscension, label: {
@@ -41,52 +41,49 @@ struct SettingsView: View {
                             })
                     }
                 }
-            }
-            else{
-                VStack{
-                    Text("CARDS")
-                        .tracking(10)
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .padding(.bottom, 40)
-
-                    Image(systemName: "lock.fill")
-                        .padding(.bottom, 50)
-                        .font(.system(size: 30))
-
-                    LockScreenCardsView()
-
-                    Spacer()
-
-                    Button(action: {
-                        sharedSettings.authenticate()
-                    }, label: {
-                        VStack{
-                            Text("Use Biometric")
-                                .foregroundColor(.primary)
-                                .font(.subheadline)
-                                .kerning(2)
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
-                                        .frame(width: 200, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                                        .foregroundColor(Color.primary.opacity(0.3))
-                                )
-                        }
-                    })
-                    .padding(30)
-                }
-                .onAppear{
-                    sharedSettings.authenticate()
-                }
-            }
+//            }
+//            else{
+//                VStack{
+//                    Text("CARDS")
+//                        .tracking(10)
+//                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+//                        .padding(.bottom, 40)
+//
+//                    Image(systemName: "lock.fill")
+//                        .padding(.bottom, 50)
+//                        .font(.system(size: 30))
+//
+//                    LockScreenCardsView()
+//
+//                    Spacer()
+//
+//                    Button(action: {
+//                        sharedSettings.authenticate()
+//                    }, label: {
+//                        VStack{
+//                            Text("Use Biometric")
+//                                .foregroundColor(.primary)
+//                                .font(.subheadline)
+//                                .kerning(2)
+//                                .padding()
+//                                .background(
+//                                    RoundedRectangle(cornerRadius: 15, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+//                                        .frame(width: 200, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+//                                        .foregroundColor(Color.primary.opacity(0.3))
+//                                )
+//                        }
+//                    })
+//                    .padding(30)
+//                }
+//            }
             
         }
         .navigationTitle("Settings")
-        .onChange(of: scenePhase, perform: { value in
-            if(value == .background){
-                sharedSettings.isUnlocked = false
-            }
-        })
+//        .onChange(of: scenePhase, perform: { value in
+//            if(value == .background){
+//                sharedSettings.isUnlocked = false
+//            }
+//        })
     }
 }
 
