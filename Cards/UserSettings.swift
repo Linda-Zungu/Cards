@@ -15,7 +15,14 @@ class UserSettings: ObservableObject{
         }
     }
     
+    @Published var changeContentView : Bool{
+        didSet{
+            UserDefaults.standard.set(changeContentView, forKey: "changeContentView")
+        }
+    }
+    
     init() {
         self.sortByAscension = UserDefaults.standard.bool(forKey: "sortByAscension")
+        self.changeContentView = UserDefaults.standard.bool(forKey: "changeContentView")
     }
 }
