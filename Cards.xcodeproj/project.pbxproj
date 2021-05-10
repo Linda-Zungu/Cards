@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6417BCCF25F2C644001AAF68 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6417BCCE25F2C644001AAF68 /* BlurView.swift */; };
+		643AE12E26485A6A0079A7D2 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643AE12D26485A6A0079A7D2 /* UserSettings.swift */; };
 		645060C125EE741D005A2DF8 /* CardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645060C025EE741D005A2DF8 /* CardsApp.swift */; };
 		645060C325EE741D005A2DF8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645060C225EE741D005A2DF8 /* ContentView.swift */; };
 		645060C525EE741F005A2DF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 645060C425EE741F005A2DF8 /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		6417BCCE25F2C644001AAF68 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		643AE12D26485A6A0079A7D2 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		645060BD25EE741D005A2DF8 /* Cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		645060C025EE741D005A2DF8 /* CardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsApp.swift; sourceTree = "<group>"; };
 		645060C225EE741D005A2DF8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				645060C025EE741D005A2DF8 /* CardsApp.swift */,
 				645060C225EE741D005A2DF8 /* ContentView.swift */,
+				643AE12D26485A6A0079A7D2 /* UserSettings.swift */,
 				64A0406926387DA5002E92C8 /* SettingsView.swift */,
 				64B2523C26194CB30097E2DE /* LockScreenCardsView.swift */,
 				646B59F22607A3C70060EA2D /* CardInfoView.swift */,
@@ -187,6 +190,7 @@
 				64B2523D26194CB30097E2DE /* LockScreenCardsView.swift in Sources */,
 				64EC7230261489C600C5D6A8 /* DoneTextField.swift in Sources */,
 				646B59EB2606BC620060EA2D /* CardDetailsView.swift in Sources */,
+				643AE12E26485A6A0079A7D2 /* UserSettings.swift in Sources */,
 				645060CD25EE741F005A2DF8 /* Cards.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
