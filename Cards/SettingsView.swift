@@ -15,11 +15,13 @@ struct SettingsView: View {
         VStack{
             Form{
                 Section(header: Text("Toggles")){
-                    HStack{
-                        Toggle.init(isOn: $userSettings.sortByAscension, label: {
-                            Text("Sort By Ascending")
-                        })
-                    }
+                    Toggle.init(isOn: $userSettings.sortByAscension, label: {
+                        Text("Sort By Ascending")
+                    })
+                    
+                    Toggle.init(isOn: $userSettings.changeContentView, label: {
+                        Text("Display Card Style")
+                    })
                     
                 }
                 Section(header: Text("About")){
