@@ -11,7 +11,8 @@ import LocalAuthentication
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
-    @State private var isUnlocked = false
+    @StateObject private var sharedSettings = SharedSettings()
+    @Environment(\.scenePhase) var scenePhase
     
     @State var isModal = false
     @State var cardNumber = ""
@@ -48,7 +49,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView{
-            if(self.isUnlocked){
+            if(sharedSettings.isUnlocked){
                 if(!isViewList){
                     List{
                         ForEach(cards){ card in
@@ -108,7 +109,7 @@ struct ContentView: View {
                     Spacer()
 
                     Button(action: {
-                        authenticate()
+                        sharedSettings.authenticate()
                     }, label: {
                         VStack{
                             Text("Use Biometric")
@@ -127,9 +128,15 @@ struct ContentView: View {
                 }
             }
         }
+        .onChange(of: scenePhase, perform: { value in
+            if(value == .background){
+                sharedSettings.isUnlocked = false
+            }
+        })
         .onAppear{
-            authenticate()
+            sharedSettings.authenticate()
         }
+        .environmentObject(sharedSettings)
         
     }
     var GuidanceModalSheet : some View{
@@ -375,44 +382,6 @@ struct ContentView: View {
         return ((num.count == 13 || num.count == 16) && num[0] == "4") || (num.count == 16 && num[0] == "5")
     }
     
-    func authenticate() {
-        let context = LAContext()
-        var error: NSError?
-
-        // check whether biometric authentication is possible
-        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
-            // it's possible, so go ahead and use it
-            let reason = "Passcode required to gain access to your data."
-
-            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, authenticationError in
-                // authentication has now completed
-                DispatchQueue.main.async {
-                    if success {
-                        // authenticated successfully
-                        self.isUnlocked = true
-                    } else {
-                        // there was a problem
-                        print("Biometric failed")
-                        
-                    }
-                }
-            }
-        } else {
-            // no biometrics allowed: Fix this!
-            print("No biometrics allowed")
-            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "") { success, authenticationError in
-                // authentication has now completed
-                DispatchQueue.main.async {
-                    if success {
-                        // authenticated successfully
-                        self.isUnlocked = true
-                    } else {
-                        // there was a problem
-                    }
-                }
-            }
-        }
-    }
 }
 
 private let itemFormatter: DateFormatter = {
