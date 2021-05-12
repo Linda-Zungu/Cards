@@ -35,9 +35,9 @@ struct SettingsView: View {
                         }
                         
                         NavigationLink(
-                            destination: /*@START_MENU_TOKEN@*/Text("Destination")/*@END_MENU_TOKEN@*/,
+                            destination: AboutDevView(),
                             label: {
-                                Text("The Developer")
+                                Text("Developer")
                             })
                     }
                 }
