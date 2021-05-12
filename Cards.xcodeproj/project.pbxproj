@@ -25,6 +25,7 @@
 		64B2523D26194CB30097E2DE /* LockScreenCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B2523C26194CB30097E2DE /* LockScreenCardsView.swift */; };
 		64DD745F260B99190036CCD3 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD745E260B99190036CCD3 /* MapView.swift */; };
 		64EC7230261489C600C5D6A8 /* DoneTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EC722F261489C600C5D6A8 /* DoneTextField.swift */; };
+		64ECEA5A264A088000B4095A /* AboutDevView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64ECEA59264A088000B4095A /* AboutDevView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		64B2523C26194CB30097E2DE /* LockScreenCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenCardsView.swift; sourceTree = "<group>"; };
 		64DD745E260B99190036CCD3 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		64EC722F261489C600C5D6A8 /* DoneTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneTextField.swift; sourceTree = "<group>"; };
+		64ECEA59264A088000B4095A /* AboutDevView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDevView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				647F3669264991A7009A6F92 /* SharedSettings.swift */,
 				643AE12D26485A6A0079A7D2 /* UserSettings.swift */,
 				64A0406926387DA5002E92C8 /* SettingsView.swift */,
+				64ECEA59264A088000B4095A /* AboutDevView.swift */,
 				64B2523C26194CB30097E2DE /* LockScreenCardsView.swift */,
 				646B59F22607A3C70060EA2D /* CardInfoView.swift */,
 				64DD745E260B99190036CCD3 /* MapView.swift */,
@@ -183,6 +186,7 @@
 				645060CA25EE741F005A2DF8 /* Persistence.swift in Sources */,
 				6417BCCF25F2C644001AAF68 /* BlurView.swift in Sources */,
 				646B227626026D1B00913EC2 /* VerifiedView.swift in Sources */,
+				64ECEA5A264A088000B4095A /* AboutDevView.swift in Sources */,
 				64DD745F260B99190036CCD3 /* MapView.swift in Sources */,
 				647761E325EE7F9B0043FE32 /* CardRowView.swift in Sources */,
 				646B59F32607A3C70060EA2D /* CardInfoView.swift in Sources */,
